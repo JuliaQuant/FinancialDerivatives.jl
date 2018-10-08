@@ -32,3 +32,6 @@ american_put = Option(100.0, 90.0, 0.05, 0.3, 180/365, -1)
 
 evaluate(american_put, BlackScholes())
 ```
+
+## TODO
+* Support for Greeks and plotting.

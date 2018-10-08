@@ -22,7 +22,7 @@ function evaluate(O::Option, m::Tian, N::Int64 = 1000)
         for i = 0:n
             if O.call == -1
                 x = O.k - O.s * exp((2 * i - n) * O.σ * √Δt)
-            elseif call == 1
+            elseif O.call == 1
                 x = O.s * exp((2 * i - n) * O.σ * √Δt) - O.k
             end
             y = (q * Z[i+1] + p * Z[i+2]) / R
