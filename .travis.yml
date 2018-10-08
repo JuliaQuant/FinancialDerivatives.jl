@@ -1,0 +1,17 @@
+language: julia
+os:
+  - linux
+  - osx
+julia:
+  - 1.0
+notifications:
+  email: false
+git:
+  depth: 99999999
+matrix:
+  allow_failures:
+  - julia: nightly
+
+after_success:
+  - julia -e 'cd(Pkg.dir("FinancialDerivatives")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'cd(Pkg.dir("FinancialDerivatives")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
