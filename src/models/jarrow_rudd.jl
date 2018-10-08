@@ -1,12 +1,12 @@
-struct CoxRossRubinstein <: Model end
+struct JarrowRudd <: Model end
 
 """
-Cox-Ross-Rubinstein binomial model.
+Jarrow-Rudd risk-neutral binomial model.
 """
-function evaluate(O::Option, m::CoxRossRubinstein, N::Int64 = 1000)
+function evaluate(O::Option, m::JarrowRudd, N::Int64 = 1000)
     Δt = O.t / N
-    U = exp(O.σ * √Δt)
-    D = exp(-O.σ * √Δt)
+    U = exp((O.r - O.σ^2 / 2) * Δt + O.σ * Δt)
+    D = exp((O.r - O.σ^2 / 2) * Δt - O.σ * Δt)
     R = exp(O.r * Δt)
     p = (R - D) / (U - D)
     q = (U - R) / (U - D)
@@ -21,10 +21,10 @@ function evaluate(O::Option, m::CoxRossRubinstein, N::Int64 = 1000)
         for i = 0:n
             if O.call == -1
                 x = O.k - O.s * exp((2 * i - n) * O.σ * √Δt)
-            elseif O.call == 1
+            elseif call == 1
                 x = O.s * exp((2 * i - n) * O.σ * √Δt) - O.k
             end
-            y = (q * Z[i+1] + p * Z[i+2]) / R
+            y = (q * Z[i+1] + p * Z[i+2]) / exp(O.r * Δt)
             Z[i+1] = max(x, y)
         end
     end

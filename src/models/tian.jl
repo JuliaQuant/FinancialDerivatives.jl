@@ -1,13 +1,14 @@
-struct CoxRossRubinstein <: Model end
+struct Tian <: Model end
 
 """
-Cox-Ross-Rubinstein binomial model.
+Tian binomial model.
 """
-function evaluate(O::Option, m::CoxRossRubinstein, N::Int64 = 1000)
+function evaluate(O::Option, m::Tian, N::Int64 = 1000)
     Δt = O.t / N
-    U = exp(O.σ * √Δt)
-    D = exp(-O.σ * √Δt)
     R = exp(O.r * Δt)
+    μ = exp(O.σ^2 * √Δt)
+    U = 0.5 * R * μ * (μ + 1 + sqrt(μ^2 + 2 * μ - 3))
+    D = 0.5 * R * μ * (μ + 1 - sqrt(μ^2 + 2 * μ - 3)) 
     p = (R - D) / (U - D)
     q = (U - R) / (U - D)
 
@@ -21,7 +22,7 @@ function evaluate(O::Option, m::CoxRossRubinstein, N::Int64 = 1000)
         for i = 0:n
             if O.call == -1
                 x = O.k - O.s * exp((2 * i - n) * O.σ * √Δt)
-            elseif O.call == 1
+            elseif call == 1
                 x = O.s * exp((2 * i - n) * O.σ * √Δt) - O.k
             end
             y = (q * Z[i+1] + p * Z[i+2]) / R

@@ -13,3 +13,5 @@ function evaluate(O::Option, m::BlackScholes)
         return O.s * cdf(Normal(), d1) - exp(-O.r * O.t) * O.k * cdf(Normal(), d2)
     end
 end
+
+evaluate(O::Option) = evaluate(O::Option, m::BlackScholes)

@@ -1,8 +1,6 @@
 # FinancialDerivatives.jl
 
 [![Build Status](https://travis-ci.org/brilhana/FinancialDerivatives.jl.svg?branch=master)](https://travis-ci.org/brilhana/FinancialDerivatives.jl)
-[![Coverage Status](https://coveralls.io/repos/brilhana/FinancialDerivatives.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/brilhana/FinancialDerivatives.jl?branch=master)
-[![codecov.io](http://codecov.io/github/brilhana/FinancialDerivatives.jl/coverage.svg?branch=master)](http://codecov.io/github/brilhana/FinancialDerivatives.jl?branch=master)
 
 Financial derivatives modeling and pricing in Julia.
 
@@ -12,8 +10,11 @@ Financial derivatives modeling and pricing in Julia.
 * Brennan-Schwartz.
 * Cox-Ross-Rubinstein.
 * Garman-Kohlhagen.
+* Jarrow-Rudd.
+* Leisen-Reimer.
 * Longstaff-Schwartz.
 * Rendlemen-Bartter.
+* Tian.
 * Vasicek.
 
 ## Installation
