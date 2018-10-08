@@ -15,6 +15,6 @@ end
 end
 
 @testset "Longstaff-Schwartz" begin
-    @test isapprox(evaluate(op, LongstaffSchwartz()), 3.22, atol=0.25)
-    @test isapprox(evaluate(oc, LongstaffSchwartz()), 15.42, atol=0.25)
+    @test isapprox(evaluate(op, LongstaffSchwartz()), 3.22, atol=1)
+    @test isapprox(evaluate(oc, LongstaffSchwartz()), 15.42, atol=1)
 end
