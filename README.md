@@ -33,7 +33,7 @@ Financial derivatives modeling and pricing in Julia.
 ```julia
 using FinancialDerivatives
 
-american_put = Option(100.0, 90.0, 0.05, 0.3, 180/365, -1)
+american_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
 
 evaluate(american_put, BlackScholes())
 ```
