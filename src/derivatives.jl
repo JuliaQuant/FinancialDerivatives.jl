@@ -4,6 +4,8 @@ abstract type Forward <: Derivative end
 
 abstract type Future <: Derivative end
 
+abstract type Option <: Derivative end
+
 abstract type Swap <: Derivative end
 
 abstract type Swaption <: Derivative end
@@ -16,7 +18,7 @@ struct InterestRateDerivative{T<:Number}
     t::T
 end
 
-struct Option{T<:Number}
+struct AmericanOption{T<:Number} <: Option
     s::T
     k::T
     r::T
@@ -25,7 +27,25 @@ struct Option{T<:Number}
     call::Int64
 end
 
-struct FXOption{T<:Number} 
+struct AsianOption{T<:Number} <: Option
+    s::T
+    k::T
+    r::T
+    σ::T
+    t::T
+    call::Int64
+end
+
+struct EuropeanOption{T<:Number} <: Option
+    s::T
+    k::T
+    r::T
+    σ::T
+    t::T
+    call::Int64
+end
+
+struct FXOption{T<:Number} <: Option
     s::T
     k::T
     r_d::T

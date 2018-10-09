@@ -4,7 +4,9 @@ import Distributions: cdf, Normal
 import Statistics: mean
 
 export InterestRateDerivative,
-       Option,
+       AmericanOption,
+       AsianOption,
+       EuropeanOption,
        FXOption
 
 export BlackScholes,

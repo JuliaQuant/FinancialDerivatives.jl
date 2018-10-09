@@ -4,6 +4,11 @@
 
 Financial derivatives modeling and pricing in Julia.
 
+## Derivatives
+
+* Options (American, Asian, European).
+* Interest rate derivatives.
+
 ## Models
 
 * Black-Scholes.
@@ -34,4 +39,7 @@ evaluate(american_put, BlackScholes())
 ```
 
 ## TODO
-* Support for Greeks and plotting.
+
+* Documentation.
+* Plotting with `Plots`.
+* Support for Greeks using `Dual` from `ForwardDiff`.
