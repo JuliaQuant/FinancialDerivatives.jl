@@ -6,21 +6,24 @@ Financial derivatives modeling and pricing in Julia.
 
 ## Derivatives
 
-* Options (American, Asian, European).
-* Interest rate derivatives.
+* `AmericanOption`
+* `AsianOption`
+* `EuropeanOption`
+* `FXOption`
+* `InterestRateDerivative`
 
 ## Models
 
-* Black-Scholes.
-* Brennan-Schwartz.
-* Cox-Ross-Rubinstein.
-* Garman-Kohlhagen.
-* Jarrow-Rudd.
-* Leisen-Reimer.
-* Longstaff-Schwartz.
-* Rendlemen-Bartter.
-* Tian.
-* Vasicek.
+* `BlackScholes`
+* `BrennanSchwartz`
+* `CoxRossRubinstein`
+* `GarmanKohlhagen`
+* `JarrowRudd`
+* `LeisenReimer`
+* `LongstaffSchwartz`
+* `RendlemenBartter`
+* `Tian`
+* `Vasicek`
 
 ## Installation
 
@@ -31,15 +34,16 @@ Financial derivatives modeling and pricing in Julia.
 ## Usage
 
 ```julia
-using FinancialDerivatives
+julia> using FinancialDerivatives
 
-american_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
+julia> american_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
 
-evaluate(american_put, BlackScholes())
+julia> evaluate(american_put, BlackScholes())
+3.2281936525908073
 ```
 
 ## TODO
 
 * Documentation.
-* Plotting with `Plots`.
-* Support for Greeks using `Dual` from `ForwardDiff`.
+* Plotting.
+* Support for Greeks using dual numbers.
