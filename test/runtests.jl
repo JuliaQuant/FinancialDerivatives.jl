@@ -38,6 +38,8 @@ ird = InterestRateDerivative(0.01875, 0.20, 0.01, 0.012, 180/365)
 end
 
 @testset "Rendleman-Bartter" begin
+    @test isapprox(evaluate(op, RendlemanBartter()), 3.22, atol=0.25)
+    @test isapprox(evaluate(oc, RendlemanBartter()), 15.42, atol=0.25)
     @test isapprox(evaluate(ird, RendlemanBartter(), 2), [0.2, 0.2, 0.2, 0.2], atol=0.025)
 end
 

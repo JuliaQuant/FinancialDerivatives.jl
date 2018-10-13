@@ -17,16 +17,14 @@ function evaluate(O::Option, m::CoxRossRubinstein, N::Int64 = 1000)
         Z = [max(0, O.s * exp((2 * i - N) * O.σ * √Δt) - O.k) for i = 0:N]
     end
     
-    for n = N-1:-1:0
-        for i = 0:n
-            if O.call == -1
-                x = O.k - O.s * exp((2 * i - n) * O.σ * √Δt)
-            elseif O.call == 1
-                x = O.s * exp((2 * i - n) * O.σ * √Δt) - O.k
-            end
-            y = (q * Z[i+1] + p * Z[i+2]) / R
-            Z[i+1] = max(x, y)
+    for n = N-1:-1:0, i = 0:n
+        if O.call == -1
+            x = O.k - O.s * exp((2 * i - n) * O.σ * √Δt)
+        elseif O.call == 1
+            x = O.s * exp((2 * i - n) * O.σ * √Δt) - O.k
         end
+        y = (q * Z[i+1] + p * Z[i+2]) / R
+        Z[i+1] = max(x, y)
     end
     
     return Z[1]
