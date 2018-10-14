@@ -6,9 +6,9 @@ Tian binomial model.
 function evaluate(O::Option, m::Tian, N::Int64 = 1000)
     Δt = O.t / N
     R = exp(O.r * Δt)
-    μ = exp(O.σ^2 * √Δt)
-    U = 0.5 * R * μ * (μ + 1 + sqrt(μ^2 + 2 * μ - 3))
-    D = 0.5 * R * μ * (μ + 1 - sqrt(μ^2 + 2 * μ - 3)) 
+    v = exp(O.σ^2 * Δt)
+    U = 0.5 * R * v * (v + 1 + sqrt(v^2 + 2 * v - 3))
+    D = 0.5 * R * v * (v + 1 - sqrt(v^2 + 2 * v - 3))
     p = (R - D) / (U - D)
     q = (U - R) / (U - D)
 
@@ -24,7 +24,7 @@ function evaluate(O::Option, m::Tian, N::Int64 = 1000)
         elseif O.call == 1
             x = O.s * exp((2 * i - n) * O.σ * √Δt) - O.k
         end
-        y = (q * Z[i+1] + p * Z[i+2]) / exp(O.r * Δt)
+        y = (q * Z[i+1] + p * Z[i+2]) / R
         Z[i+1] = max(x, y)
     end
     

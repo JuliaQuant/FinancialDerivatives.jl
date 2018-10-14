@@ -17,11 +17,18 @@ end
 @testset "Jarrow-Rudd" begin
     @test isapprox(evaluate(op, JarrowRudd()), 3.22, atol=0.25)
     @test isapprox(evaluate(oc, JarrowRudd()), 15.42, atol=0.25)
+    @test isapprox(evaluate(op, JarrowRudd(), false), 3.22, atol=0.25)
+    @test isapprox(evaluate(oc, JarrowRudd(), false), 15.42, atol=0.25)
 end
 
 @testset "Longstaff-Schwartz" begin
     @test isapprox(evaluate(op, LongstaffSchwartz()), 3.22, atol=1)
     @test isapprox(evaluate(oc, LongstaffSchwartz()), 15.42, atol=1)
+end
+
+@testset "Tian" begin
+    @test isapprox(evaluate(op, Tian()), 5.15, atol=0.25)
+    @test isapprox(evaluate(oc, Tian()), 11.87, atol=0.25)
 end
 
 @testset "Garman–Kohlhagen" begin

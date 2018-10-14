@@ -1,12 +1,21 @@
 struct JarrowRudd <: Model end
 
 """
-Jarrow-Rudd equal-probability binomial model.
+Jarrow-Rudd binomial model, defaults to the risk-neutral version.
 """
-function evaluate(O::Option, m::JarrowRudd, N::Int64 = 1000)
+function evaluate(O::Option, m::JarrowRudd, risk_neutral::Bool = true, N::Int64 = 1000)
     Δt = O.t / N
-    p = q = 0.5
+    R = exp(O.r * Δt)
 
+    if risk_neutral
+         U = exp((O.r - O.σ^2 / 2) * Δt + O.σ * √Δt)
+         D = exp((O.r - O.σ^2 / 2) * Δt - O.σ * √Δt)
+         p = (R - D) / (U - D)
+         q = (U - R) / (U - D)
+    else
+        p = q = 0.5
+    end
+    
     if O.call == -1
         Z = [max(0, O.k - O.s * exp((2 * i - N) * O.σ * √Δt)) for i = 0:N]
     elseif O.call == 1
