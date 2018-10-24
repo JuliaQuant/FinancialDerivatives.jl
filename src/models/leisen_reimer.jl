@@ -5,7 +5,8 @@ function h(z::T, n::Int64) where {T<:Number}
 end
 
 """
-Leisen-Reimer binomial model.
+`LeisenReimer` binomial model:
+    `N`: number of paths to simulate, must be odd
 """
 function evaluate(O::Option, m::LeisenReimer, N::Int64 = 1001)
     Δt = 0.01 # O.t / N

@@ -1,7 +1,8 @@
 struct Vasicek <: Model end
 
 """
-Vasicek.
+`Vasicek`:
+    `n`: number of paths to simulate
 """
 function evaluate(IRD::InterestRateDerivative, m::Vasicek, n::Int64 = 12)
     Δt = IRD.t / n

@@ -1,7 +1,9 @@
 struct JarrowRudd <: Model end
 
 """
-Jarrow-Rudd binomial model, defaults to the risk-neutral version.
+`JarrowRudd` binomial model, defaults to the risk-neutral version:
+    `risk_neutral`: `true` if risk neutral, `false` if equal probability.
+    `N`: number of paths to simulate
 """
 function evaluate(O::Option, m::JarrowRudd, risk_neutral::Bool = true, N::Int64 = 1000)
     Δt = O.t / N

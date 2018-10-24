@@ -1,7 +1,8 @@
 struct CoxIngersollRoss <: Model end
 
 """
-Cox–Ingersoll–Ross.
+`CoxIngersollRoss`:
+    `n`: number of paths to simulate
 """
 function evaluate(IRD::InterestRateDerivative, m::CoxIngersollRoss, n::Int64 = 12)
     Δt = IRD.t / n

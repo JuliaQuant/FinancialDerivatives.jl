@@ -1,7 +1,8 @@
 struct BrennanSchwartz <: Model end
 
 """
-Brennan-Schwartz.
+`BrennanSchwartz`:
+    `n`: number of paths to simulate
 """
 function evaluate(IRD::InterestRateDerivative, m::BrennanSchwartz, n::Int64 = 12)
     Δt = IRD.t / n

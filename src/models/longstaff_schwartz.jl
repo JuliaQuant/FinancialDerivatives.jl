@@ -1,7 +1,9 @@
 struct LongstaffSchwartz <: Model end
 
 """
-Longstaff-Schwartz.
+`LongstaffSchwartz`:
+    `N`: number of paths to simulate
+    `P`: number of periods
 """
 function evaluate(O::Option, m::LongstaffSchwartz, N::Int64 = 1000, P::Int64 = 10000)
     Δt = O.t / N

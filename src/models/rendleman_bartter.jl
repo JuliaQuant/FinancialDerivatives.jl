@@ -1,7 +1,8 @@
 struct RendlemanBartter <: Model end
 
 """
-Rendleman-Bartter.
+`RendlemanBartter`:
+    `n`: number of paths to simulate
 """
 function evaluate(IRD::InterestRateDerivative, m::RendlemanBartter, n::Int64 = 12)
     Δt = IRD.t / n
