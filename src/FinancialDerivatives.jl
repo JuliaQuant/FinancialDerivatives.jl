@@ -11,7 +11,7 @@ export InterestRateDerivative,
 
 export BlackScholes,
        BrennanSchwartz,
-       CoxIngersollRoss
+       CoxIngersollRoss,
        CoxRossRubinstein,
        GarmanKohlhagen,
        JarrowRudd,
@@ -29,7 +29,7 @@ include("derivatives.jl")
 
 include("models/black_scholes.jl")
 include("models/brennan_schwartz.jl")
-include("cox_ingersoll_ross.jl")
+include("models/cox_ingersoll_ross.jl")
 include("models/cox_ross_rubinstein.jl")
 include("models/garman_kohlhagen.jl")
 include("models/jarrow_rudd.jl")
