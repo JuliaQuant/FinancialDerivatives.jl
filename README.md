@@ -1,6 +1,6 @@
 # FinancialDerivatives.jl
 
-[![Build Status](https://travis-ci.org/brilhana/FinancialDerivatives.jl.svg?branch=master)](https://travis-ci.org/brilhana/FinancialDerivatives.jl)
+[![Build Status](https://travis-ci.org/JuliaQuant/FinancialDerivatives.jl.svg?branch=master)](https://travis-ci.org/JuliaQuant/FinancialDerivatives.jl)
 
 Financial derivatives modeling and pricing in Julia.
 
