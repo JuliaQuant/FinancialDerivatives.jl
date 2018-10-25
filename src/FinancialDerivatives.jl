@@ -9,7 +9,8 @@ export InterestRateDerivative,
        EuropeanOption,
        FXOption
 
-export BlackScholes,
+export BlackKarasinski,
+       BlackScholes,
        BrennanSchwartz,
        CoxIngersollRoss,
        CoxRossRubinstein,
@@ -27,6 +28,7 @@ abstract type Model end
 
 include("derivatives.jl")
 
+include("models/black_karasinski.jl")
 include("models/black_scholes.jl")
 include("models/brennan_schwartz.jl")
 include("models/cox_ingersoll_ross.jl")

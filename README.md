@@ -14,6 +14,7 @@ Financial derivatives modeling and pricing in Julia.
 
 ## Models
 
+* `BlackKarasinski`
 * `BlackScholes`
 * `BrennanSchwartz`
 * `CoxIngersollRoss`
