@@ -30,7 +30,7 @@ Financial derivatives modeling and pricing in Julia.
 ## Installation
 
 ```julia
-(v1.0) pkg> add https://github.com/brilhana/FinancialDerivatives.jl
+(v1.0) pkg> add https://github.com/JuliaQuant/FinancialDerivatives.jl
 ```
 
 ## Usage
