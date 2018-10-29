@@ -1,10 +1,14 @@
 # Getting Started
 
+## Installation
+
 `FinancialDerivatives` is a unregistered package for the moment. To add it to your Julia packages, simply do the following in REPL:
 
 ```julia
-(v1.0) pkg> add https://github.com/brilhana/FinancialDerivatives.jl
+(v1.0) pkg> add https://github.com/JuliaQuant/FinancialDerivatives.jl
 ```
+
+## Usage
 
 To price an American option, simply create a new `AmericanOption` and pass it to `evaluate` with the desired valuation model:
 

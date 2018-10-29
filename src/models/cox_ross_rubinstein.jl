@@ -1,8 +1,16 @@
+"""
+CoxRossRubinstein binomial model
+"""
 struct CoxRossRubinstein <: Model end
 
 """
-`CoxRossRubinstein` binomial model:
-    `N`: number of paths to simulate
+    evaluate(O, CoxRossRubinstein(), N = 1000)
+
+Evaluate option `O` using CoxRossRubinstein.
+
+# Arguments
+- `O::Option`: option
+- `N`: number of paths to simulate
 """
 function evaluate(O::Option, m::CoxRossRubinstein, N::Int64 = 1000)
     Δt = O.t / N

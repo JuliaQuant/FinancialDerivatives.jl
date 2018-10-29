@@ -1,8 +1,15 @@
+"""
+RendlemanBartter model
+"""
 struct RendlemanBartter <: Model end
 
 """
-`RendlemanBartter`:
-    `n`: number of paths to simulate
+    evaluate(IRD, RendlemanBartter(), n = 12)
+
+Evaluate interest rate derivative `IRD` using `RendlemanBartter` model.
+
+# Arguments
+- `n`: number of paths to simulate
 """
 function evaluate(IRD::InterestRateDerivative, m::RendlemanBartter, n::Int64 = 12)
     Δt = IRD.t / n
@@ -15,7 +22,13 @@ function evaluate(IRD::InterestRateDerivative, m::RendlemanBartter, n::Int64 = 1
 end
 
 """
-Rendleman-Bartter binomial model.
+    evaluate(O, RendlemanBartter(), k = 1, N = 1000)
+
+Evaluate option `O` using `RendlemanBartter` model.
+
+# Arguments
+- `k`:
+- `N`: 
 """
 function evaluate(O::Option, m::RendlemanBartter, k::Int64 = 1, N::Int64 = 1000)
     Δt = O.t / N

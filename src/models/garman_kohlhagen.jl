@@ -1,7 +1,15 @@
+"""
+Garman–Kohlhagen model
+"""
 struct GarmanKohlhagen <: Model end
 
 """
-Garman–Kohlhagen.
+    evaluate(O::FXOption, GarmanKohlhagen())
+
+Evaluate FX Option using Garman–Kohlhagen model.
+
+# Arguments
+- `O::FXOption`
 """
 function evaluate(O::FXOption, m::GarmanKohlhagen)
     d1 = (log(O.s / O.k) + (O.r_d - O.r_f * O.σ / 2) * O.t) / (O.σ * √O.t)
