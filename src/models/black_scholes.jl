@@ -1,12 +1,14 @@
 """
-Black-Scholes model
+    BlackScholes()
+
+[Black-Scholes model](https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model).
 """
 struct BlackScholes <: Model end
 
 """
     evaluate(O, BlackScholes())
 
-Evaluate option `O` using Black-Scholes model.
+Evaluate option `O` using `BlackScholes` model.
 
 # Arguments
 - `O::Option`: Option
