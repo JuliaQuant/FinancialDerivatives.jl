@@ -11,10 +11,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/brilhana/FinancialDerivatives.jl.git", # eventually "github.com/JuliaQuant/FinancialDerivatives.jl.git"
-    julia  = "1.0",
-    latest = "master",
-    target = "build",
-    deps = nothing,
-    make = nothing
+    repo = "github.com/JuliaQuant/FinancialDerivatives.jl.git"
 )
