@@ -1,3 +1,6 @@
+"""
+LeisenReimer binomial model
+"""
 struct LeisenReimer <: Model end
 
 function h(z::T, n::Int64) where {T<:Number}
@@ -5,8 +8,12 @@ function h(z::T, n::Int64) where {T<:Number}
 end
 
 """
-`LeisenReimer` binomial model:
-    `N`: number of paths to simulate, must be odd
+    evaluate(O, LeisenReimer(), N = 1001)
+
+Evaluate option `O` using `LeisenReimer` binomial model.
+
+# Arguments
+- `N`: number of paths to simulate, must be odd
 """
 function evaluate(O::Option, m::LeisenReimer, N::Int64 = 1001)
     Δt = 0.01 # O.t / N

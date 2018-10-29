@@ -6,7 +6,8 @@ makedocs(
     sitename = "FinancialDerivatives.jl",
     pages = [
         "index.md",
-        "getting_started.md"
+        "getting_started.md",
+        "api.md"
     ]
 )
 

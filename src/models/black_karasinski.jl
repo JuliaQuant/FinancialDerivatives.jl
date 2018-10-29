@@ -1,8 +1,16 @@
+"""
+BlackKarasinski model
+"""
 struct BlackKarasinski <: Model end
 
 """
-`BlackKarasinski`:
-    `n`: number of paths to simulate
+    evaluate(IRD, BlackKarasinski(), n = 12)
+
+Evaluate interest rate derivative using `BlackKarasinski` model.
+
+# Arguments
+- `IRD::InterestRateDerivative`: InterestRateDerivative
+- `n`: number of paths to simulate
 """
 function evaluate(IRD::InterestRateDerivative, m::BlackKarasinski, n::Int64 = 12)
     Δt = IRD.t / n

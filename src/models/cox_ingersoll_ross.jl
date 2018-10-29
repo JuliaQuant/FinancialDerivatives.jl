@@ -1,8 +1,16 @@
+"""
+CoxIngersollRoss model
+"""
 struct CoxIngersollRoss <: Model end
 
 """
-`CoxIngersollRoss`:
-    `n`: number of paths to simulate
+    evaluate(IRD, CoxIngersollRoss(), n)
+
+Evaluate interest rate derivative `IRD` using `CoxIngersollRoss` model.
+
+# Arguments
+- `IRD::InterestRateDerivative`: interest rate derivative
+- `n`: number of paths to simulate
 """
 function evaluate(IRD::InterestRateDerivative, m::CoxIngersollRoss, n::Int64 = 12)
     Δt = IRD.t / n

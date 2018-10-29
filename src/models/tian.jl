@@ -1,8 +1,15 @@
+"""
+Tian binomial model
+"""
 struct Tian <: Model end
 
 """
-`Tian` binomial model:
-    `N`: number of paths to simulate
+    evaluate(O, Tian(), N = 1000)
+
+Evaluate option `O` using `Tian` binomial model.
+
+# Arguments
+`N`: number of paths to simulate
 """
 function evaluate(O::Option, m::Tian, N::Int64 = 1000)
     Δt = O.t / N

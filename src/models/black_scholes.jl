@@ -1,7 +1,15 @@
+"""
+Black-Scholes model
+"""
 struct BlackScholes <: Model end
 
 """
-Black-Scholes.
+    evaluate(O, BlackScholes())
+
+Evaluate option `O` using Black-Scholes model.
+
+# Arguments
+- `O::Option`: Option
 """
 function evaluate(O::Option, m::BlackScholes)
     d1 = (log(O.s / O.k) + (O.r + O.σ * O.σ / 2) * O.t) / (O.σ * √O.t)
@@ -14,4 +22,10 @@ function evaluate(O::Option, m::BlackScholes)
     end
 end
 
+
+"""
+    evaluate(o)
+
+Evaluate option `o` using Back-Scholes model as default valuation model.
+"""
 evaluate(O::Option) = evaluate(O::Option, m::BlackScholes)

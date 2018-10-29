@@ -1,11 +1,14 @@
 # FinancialDerivatives Overview
 
-The `FinancialDerivatives` package provides convenient models for pricing financial derivatives in Julia.
+```@docs
+FinancialDerivatives
+```
 
 ## Contents
 
 ```@contents
 Pages = [
-  "getting_started.md"
+  "getting_started.md",
+  "api.md"
 ]
 ```
