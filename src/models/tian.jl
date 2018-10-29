@@ -1,5 +1,7 @@
 """
-Tian binomial model
+    Tian()
+
+[Tian binomial model](http://simulations.lpsm.paris/binomial_trees/tian).
 """
 struct Tian <: Model end
 

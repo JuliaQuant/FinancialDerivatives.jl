@@ -1,12 +1,14 @@
 """
-CoxRossRubinstein binomial model
+    CoxRossRubinstein()
+
+[Cox-Ross-Rubinstein binomial model (aka Binomial options pricing model)](https://en.wikipedia.org/wiki/Binomial_options_pricing_model).
 """
 struct CoxRossRubinstein <: Model end
 
 """
     evaluate(O, CoxRossRubinstein(), N = 1000)
 
-Evaluate option `O` using CoxRossRubinstein.
+Evaluate option `O` using `CoxRossRubinstein`.
 
 # Arguments
 - `O::Option`: option

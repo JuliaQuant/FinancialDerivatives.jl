@@ -1,12 +1,14 @@
 """
-Garman–Kohlhagen model
+    GarmanKohlhagen()
+
+[Garman–Kohlhagen model](https://en.wikipedia.org/wiki/Foreign_exchange_option#Valuation:_the_Garman%E2%80%93Kohlhagen_model).
 """
 struct GarmanKohlhagen <: Model end
 
 """
     evaluate(O::FXOption, GarmanKohlhagen())
 
-Evaluate FX Option using Garman–Kohlhagen model.
+Evaluate FX Option using `GarmanKohlhagen` model.
 
 # Arguments
 - `O::FXOption`
