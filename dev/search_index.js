@@ -61,7 +61,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Getting Started",
     "title": "Usage",
     "category": "section",
-    "text": "To price an American option, simply create a new AmericanOption and pass it to evaluate with the desired valuation model:julia> using FinancialDerivatives\n\njulia> american_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)\n\njulia> evaluate(american_put, BlackScholes())\n3.2281936525908073"
+    "text": "To price an European option, simply create a new EuropeanOption and pass it to evaluate with the desired valuation model:julia> using FinancialDerivatives\n\njulia> euro_put = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)\n\njulia> evaluate(euro_put, BlackScholes())\n3.2281936525908073"
 },
 
 {
