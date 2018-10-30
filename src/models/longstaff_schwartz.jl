@@ -14,7 +14,7 @@ Evaluate option `O` using `LongstaffSchwartz` binomial model.
 - `N`: number of paths to simulate
 - `P`: number of periods
 """
-function evaluate(O::Option, m::LongstaffSchwartz, N::Int64 = 1000, P::Int64 = 10000)
+function evaluate(O::AmericanOption, m::LongstaffSchwartz, N::Int64 = 1000, P::Int64 = 10000)
     Δt = O.t / N
     R = exp(O.r * Δt)
     T = typeof(O.s * exp(-O.σ^2 * Δt / 2 + O.σ * √Δt * 0.1) / R)

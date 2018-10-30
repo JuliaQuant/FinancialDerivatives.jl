@@ -13,7 +13,7 @@ Evaluate option `O` using `BlackScholes` model.
 # Arguments
 - `O::Option`: Option
 """
-function evaluate(O::Option, m::BlackScholes)
+function evaluate(O::EuropeanOption, m::BlackScholes)
     d1 = (log(O.s / O.k) + (O.r + O.σ * O.σ / 2) * O.t) / (O.σ * √O.t)
     d2 = d1 - O.σ * √O.t
 
@@ -30,4 +30,4 @@ end
 
 Evaluate option `o` using Back-Scholes model as default valuation model.
 """
-evaluate(O::Option) = evaluate(O::Option, m::BlackScholes)
+evaluate(O::EuropeanOption) = evaluate(O::EuropeanOption, m::BlackScholes)
