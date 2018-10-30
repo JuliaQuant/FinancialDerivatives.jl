@@ -1,8 +1,8 @@
 using FinancialDerivatives
 using Test
 
-eu_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
-eu_call = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, 1)
+eu_put = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
+eu_call = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180/365, 1)
 
 am_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
 am_call = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, 1)
@@ -42,6 +42,10 @@ end
 end
 
 ird = InterestRateDerivative(0.01875, 0.20, 0.01, 0.012, 180/365)
+
+@testset "Black-Karasinski" begin
+    @test isapprox(evaluate(ird, BlackKarasinski(), 2), [0.2, 0.2, 0.2, 0.2], atol=0.25)
+end
 
 @testset "Brennan-Schwartz" begin
     @test isapprox(evaluate(ird, BrennanSchwartz(), 2), [0.2, 0.2, 0.2, 0.2], atol=0.25)
