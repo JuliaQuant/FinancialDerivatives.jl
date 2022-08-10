@@ -4,7 +4,7 @@
 
 ## Installation
 ```julia
-(v1.0) pkg> add https://github.com/JuliaQuant/FinancialDerivatives.jl
+(v1.0) pkg> add FinancialDerivatives
 ```
 
 ## Usage
