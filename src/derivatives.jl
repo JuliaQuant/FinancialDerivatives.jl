@@ -40,12 +40,12 @@ abstract type Swaption <: Derivative end
 - `θ`: long term mean level
 - `t`: time interval
 """
-struct InterestRateDerivative{T<:Number}
-    k::T
-    r::T
-    σ::T
-    θ::T
-    t::T
+struct InterestRateDerivative
+    k::Real
+    r::Real
+    σ::Real
+    θ::Real
+    t::Real
 end
 
 """
@@ -61,12 +61,12 @@ end
 - `t`: time to expiration
 - `call`: 1 if call, -1 if put
 """
-struct AmericanOption{T<:Number} <: Option
-    s::T
-    k::T
-    r::T
-    σ::T
-    t::T
+struct AmericanOption <: Option
+    s::Real
+    k::Real
+    r::Real
+    σ::Real
+    t::Real
     call::Int64
 end
 
@@ -83,12 +83,12 @@ end
 - `t`: time to expiration
 - `call`: 1 if call, -1 if put
 """
-struct AsianOption{T<:Number} <: Option
-    s::T
-    k::T
-    r::T
-    σ::T
-    t::T
+struct AsianOption <: Option
+    s::Real
+    k::Real
+    r::Real
+    σ::Real
+    t::Real
     call::Int64
 end
 
@@ -105,12 +105,12 @@ end
 - `t`: time to expiration
 - `call`: 1 if call, -1 if put
 """
-struct EuropeanOption{T<:Number} <: Option
-    s::T
-    k::T
-    r::T
-    σ::T
-    t::T
+struct EuropeanOption <: Option
+    s::Real
+    k::Real
+    r::Real
+    σ::Real
+    t::Real
     call::Int64
 end
 
@@ -128,12 +128,12 @@ end
 - `t`: time to expiration
 - `call`: 1 if call, -1 if put
 """
-struct FXOption{T<:Number} <: Option
-    s::T
-    k::T
-    r_d::T
-    r_f::T
-    σ::T
-    t::T
+struct FXOption <: Option
+    s::Real
+    k::Real
+    r_d::Real
+    r_f::Real
+    σ::Real
+    t::Real
     call::Int64
 end
