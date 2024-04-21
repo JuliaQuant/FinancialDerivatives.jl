@@ -1,11 +1,11 @@
 using FinancialDerivatives
 using Test
 
-eu_put = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
-eu_call = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180/365, 1)
+eu_put = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180 / 365, false)
+eu_call = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180 / 365, true)
 
-am_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
-am_call = AmericanOption(100.0, 90.0, 0.05, 0.3, 180/365, 1)
+am_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180 / 365, false)
+am_call = AmericanOption(100.0, 90.0, 0.05, 0.3, 180 / 365, true)
 
 @testset "Black-Scholes" begin
     @test isapprox(evaluate(eu_put, BlackScholes()), 3.22, atol=0.1)
@@ -35,13 +35,13 @@ end
 end
 
 @testset "Garman–Kohlhagen" begin
-    fxp = FXOption(100.0, 90.0, 0.05, 0.025, 0.3, 180/365, -1)
-    fxc = FXOption(100.0, 90.0, 0.05, 0.025, 0.3, 180/365, 1)
+    fxp = FXOption(100.0, 90.0, 0.05, 0.025, 0.3, 180 / 365, false)
+    fxc = FXOption(100.0, 90.0, 0.05, 0.025, 0.3, 180 / 365, true)
     @test isapprox(evaluate(fxp, GarmanKohlhagen()), 3.51, atol=0.25)
     @test isapprox(evaluate(fxc, GarmanKohlhagen()), 14.48, atol=0.25)
 end
 
-ird = InterestRateDerivative(0.01875, 0.20, 0.01, 0.012, 180/365)
+ird = InterestRateDerivative(0.01875, 0.20, 0.01, 0.012, 180 / 365)
 
 @testset "Black-Karasinski" begin
     @test isapprox(evaluate(ird, BlackKarasinski(), 2), [0.2, 0.2, 0.2, 0.2], atol=0.25)

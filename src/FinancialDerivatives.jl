@@ -10,7 +10,9 @@ export InterestRateDerivative,
        AmericanOption,
        AsianOption,
        EuropeanOption,
-       FXOption
+       FXOption,
+       iscall,
+       isput
 
 export BlackKarasinski,
        BlackScholes,
