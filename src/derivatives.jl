@@ -18,6 +18,12 @@ Abstract type for [option](https://en.wikipedia.org/wiki/Option_(finance)).
 """
 abstract type Option <: Derivative end
 
+"Return `true` if the `Option` `o` is a put option"
+isput(o::Option) = !iscall(o)
+
+"Return `true` if the `Option` `o` is a call option"
+iscall(o::Option) = o.call
+
 """
 Abstract type for [swap](https://en.wikipedia.org/wiki/Swap_(finance)).
 """
@@ -40,12 +46,12 @@ abstract type Swaption <: Derivative end
 - `θ`: long term mean level
 - `t`: time interval
 """
-struct InterestRateDerivative
-    k::Real
-    r::Real
-    σ::Real
-    θ::Real
-    t::Real
+struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real}
+    k::KT
+    r::RT
+    σ::σT
+    θ::θT
+    t::TT
 end
 
 """
@@ -59,15 +65,15 @@ end
 - `r`: risk-free interest rate
 - `σ`: volatility
 - `t`: time to expiration
-- `call`: 1 if call, -1 if put
+- `call`: `true` if call, `false` if put
 """
-struct AmericanOption <: Option
-    s::Real
-    k::Real
-    r::Real
-    σ::Real
-    t::Real
-    call::Int64
+struct AmericanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+    s::ST
+    k::KT
+    r::RT
+    σ::σT
+    t::TT
+    call::Bool
 end
 
 """
@@ -81,15 +87,15 @@ end
 - `r`: risk-free interest rate
 - `σ`: volatility
 - `t`: time to expiration
-- `call`: 1 if call, -1 if put
+- `call`: `true` if call, `false` if put
 """
-struct AsianOption <: Option
-    s::Real
-    k::Real
-    r::Real
-    σ::Real
-    t::Real
-    call::Int64
+struct AsianOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+    s::ST
+    k::KT
+    r::RT
+    σ::σT
+    t::TT
+    call::Bool
 end
 
 """
@@ -103,15 +109,15 @@ end
 - `r`: risk-free interest rate
 - `σ`: volatility
 - `t`: time to expiration
-- `call`: 1 if call, -1 if put
+- `call`: `true` if call, `false` if put
 """
-struct EuropeanOption <: Option
-    s::Real
-    k::Real
-    r::Real
-    σ::Real
-    t::Real
-    call::Int64
+struct EuropeanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+    s::ST
+    k::KT
+    r::RT
+    σ::σT
+    t::TT
+    call::Bool
 end
 
 """
@@ -126,14 +132,14 @@ end
 - `r_f`: foreign risk-free interest rate
 - `σ`: volatility
 - `t`: time to expiration
-- `call`: 1 if call, -1 if put
+- `call`: `true` if call, `false` if put
 """
-struct FXOption <: Option
-    s::Real
-    k::Real
-    r_d::Real
-    r_f::Real
-    σ::Real
-    t::Real
-    call::Int64
+struct FXOption{ST<:Real,KT<:Real,RDT<:Real,RFT<:Real,σT<:Real,TT<:Real} <: Option
+    s::ST
+    k::KT
+    r_d::RDT
+    r_f::RFT
+    σ::σT
+    t::TT
+    call::Bool
 end
