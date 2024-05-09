@@ -13,7 +13,7 @@ To price an European option, simply create a new `EuropeanOption` and pass it to
 ```julia
 julia> using FinancialDerivatives
 
-julia> euro_put = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180/365, -1)
+julia> euro_put = EuropeanOption(s=100.0, k=90.0, r=0.05, q=0.0, σ=0.3, t=180 / 365, call=false)
 
 julia> evaluate(euro_put, BlackScholes())
 3.2281936525908073

@@ -21,7 +21,7 @@ Evaluate option `O` using `LeisenReimer` binomial model.
 function evaluate(O::Option, m::LeisenReimer, N::Int64=1001)
     Δt = 0.01 # O.t / N
     R = exp(O.r * Δt)
-    d1 = (log(O.s / O.k) + (O.r + O.σ * O.σ / 2) * O.t) / (O.σ * √O.t)
+    d1 = (log(O.s / O.k) + (O.r + O.σ^2 / 2) * O.t) / (O.σ * √O.t)
     d2 = d1 - O.σ * √O.t
     p = h(d2, N)
     q = 1 - p

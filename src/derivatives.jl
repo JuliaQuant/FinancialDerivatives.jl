@@ -46,7 +46,7 @@ abstract type Swaption <: Derivative end
 - `θ`: long term mean level
 - `t`: time interval
 """
-struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real}
+@kwdef struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real}
     k::KT
     r::RT
     σ::σT
@@ -67,7 +67,7 @@ end
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct AmericanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+@kwdef struct AmericanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
     s::ST
     k::KT
     r::RT
@@ -89,7 +89,7 @@ end
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct AsianOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+@kwdef struct AsianOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
     s::ST
     k::KT
     r::RT
@@ -107,14 +107,17 @@ end
 - `s`: underlying price
 - `k`: strike price
 - `r`: risk-free interest rate
+- `q`: dividend yield
 - `σ`: volatility
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct EuropeanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+@kwdef struct EuropeanOption{ST<:Real,KT<:Real,RT<:Real,QT<:Real,σT<:Real,TT<:Real} <:
+              Option
     s::ST
     k::KT
     r::RT
+    q::QT
     σ::σT
     t::TT
     call::Bool
@@ -134,7 +137,7 @@ end
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct FXOption{ST<:Real,KT<:Real,RDT<:Real,RFT<:Real,σT<:Real,TT<:Real} <: Option
+@kwdef struct FXOption{ST<:Real,KT<:Real,RDT<:Real,RFT<:Real,σT<:Real,TT<:Real} <: Option
     s::ST
     k::KT
     r_d::RDT
