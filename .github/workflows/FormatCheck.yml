@@ -1,4 +1,4 @@
-name: check-format
+name: "Format Check"
 
 on:
   push:
@@ -20,6 +20,7 @@ jobs:
       - uses: julia-actions/setup-julia@latest
         with:
           version: ${{ matrix.julia-version }}
+          fail_ci_if_error: false
 
       - uses: actions/checkout@v4
       - name: Install JuliaFormatter and format
@@ -40,3 +41,4 @@ jobs:
               write(stdout, out)
               exit(1)
           end'
+        
