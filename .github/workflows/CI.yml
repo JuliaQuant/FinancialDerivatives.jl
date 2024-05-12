@@ -64,5 +64,3 @@ jobs:
             using FinancialDerivatives
             DocMeta.setdocmeta!(FinancialDerivatives, :DocTestSetup, :(using FinancialDerivatives); recursive=true)
             doctest(FinancialDerivatives)'
-        with:
-          fail_ci_if_error: false

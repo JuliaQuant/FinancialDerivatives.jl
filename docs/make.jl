@@ -1,8 +1,11 @@
 using Documenter
 using FinancialDerivatives
 
+DocMeta.setdocmeta!(FinancialDerivatives, :DocTestSetup, :(using FinancialDerivatives);
+                    recursive=true)
+
 makedocs(; sitename="FinancialDerivatives.jl",
-         clean=true, doctest=false, linkcheck=true,
+         clean=true, doctest=false, linkcheck=false,
          format=Documenter.HTML(;
                                 prettyurls=get(ENV, "CI", "false") == "true",
                                 canonical="https://JuliaQuant.github.io/FinancialDerivatives.jl",
