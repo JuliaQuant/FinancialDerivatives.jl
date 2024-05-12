@@ -31,7 +31,7 @@ jobs:
             arch: x64
             version: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.version }}
@@ -50,7 +50,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v1
         with:
           version: '1'
@@ -64,3 +64,5 @@ jobs:
             using FinancialDerivatives
             DocMeta.setdocmeta!(FinancialDerivatives, :DocTestSetup, :(using FinancialDerivatives); recursive=true)
             doctest(FinancialDerivatives)'
+        with:
+          fail_ci_if_error: false

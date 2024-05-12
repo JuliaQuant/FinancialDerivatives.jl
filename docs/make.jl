@@ -1,9 +1,13 @@
 using Documenter
 using FinancialDerivatives
 
-makedocs(; format=:html,
-         sitename="FinancialDerivatives.jl",
+makedocs(; sitename="FinancialDerivatives.jl",
          clean=true, doctest=false, linkcheck=true,
+         format=Documenter.HTML(;
+                                prettyurls=get(ENV, "CI", "false") == "true",
+                                canonical="https://JuliaQuant.github.io/FinancialDerivatives.jl",
+                                edit_link="main",
+                                assets=String[]),
          pages=["index.md",
                 "getting_started.md",
                 "api.md"])
