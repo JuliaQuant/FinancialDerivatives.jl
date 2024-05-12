@@ -27,8 +27,6 @@ julia> evaluate(euro_put, BlackScholes())
 3.2281936525908073
 ```
 
-https://codecov.io/gh/<your-organisation>/<your-project>/settings/badge
-
 [dev-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [dev-url]: https://JuliaQunat.github.io/FinancialDerivatives.jl/dev/
 [ci-img]: https://github.com/JuliaQuant/FinancialDerivatives.jl/actions/workflows/CI.yml/badge.svg?branch=master
