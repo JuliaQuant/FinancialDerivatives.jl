@@ -39,6 +39,3 @@ julia> evaluate(euro_put, BlackScholes())
 [lic-url]: https://github.com/mvanzulli/FinancialDerivatives.jl/blob/master/LICENSE
 [com-url]: https://app.slack.com/client/T04QWNG5T2Q/C04R6TMDV0R
 [com-img]: https://user-images.githubusercontent.com/50339940/224228295-4ff7c201-975f-4e87-af51-86036a10f289.svg
-
-
-
