@@ -49,6 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    continue-on-error: true  # Remove this after fixing docs adding Documenter Keys on CI
     steps:
       - uses: actions/checkout@v3
       - uses: julia-actions/setup-julia@v1
