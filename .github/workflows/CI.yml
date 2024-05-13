@@ -47,6 +47,7 @@ jobs:
   docs:
     name: Documentation
     runs-on: ubuntu-latest
+    environment: github-pages
     permissions:
       contents: write
     continue-on-error: true  # Remove this after fixing docs adding Documenter Keys on CI
