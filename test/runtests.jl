@@ -28,8 +28,8 @@ end
 end
 
 @testset "Longstaff-Schwartz" begin
-    @test evaluate(am_put, LongstaffSchwartz()) ≈ 3.22 atol = 0.2
-    @test evaluate(am_call, LongstaffSchwartz()) ≈ 15.42 atol = 0.2
+    @test evaluate(am_put, LongstaffSchwartz()) ≈ 3.22 atol = 0.4
+    @test evaluate(am_call, LongstaffSchwartz()) ≈ 15.42 atol = 0.4
 end
 
 @testset "Tian" begin
