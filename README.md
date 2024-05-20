@@ -28,14 +28,10 @@ julia> evaluate(euro_put, BlackScholes())
 ```
 
 [dev-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[dev-url]: https://JuliaQunat.github.io/FinancialDerivatives.jl/dev/
+[dev-url]: https://JuliaQuant.github.io/FinancialDerivatives.jl/dev/
 [ci-img]: https://github.com/JuliaQuant/FinancialDerivatives.jl/actions/workflows/CI.yml/badge.svg?branch=master
 [ci-url]: https://github.com/JuliaQuant/FinancialDerivatives.jl/actions/workflows/CI.yml?query=branch%3Amaster
 [cov-img]: https://codecov.io/gh/JuliaQuant/FinancialDerivatives.jl/branch/master/graph/badge.svg
 [cov-url]: https://codecov.io/gh/JuliaQuant/FinancialDerivatives.jl
-[doi-img]: https://zenodo.org/badge/170120732.svg
-[doi-url]: https://zenodo.org/badge/latestdoi/
 [lic-img]: https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000
 [lic-url]: https://github.com/mvanzulli/FinancialDerivatives.jl/blob/master/LICENSE
-[com-url]: https://app.slack.com/client/T04QWNG5T2Q/C04R6TMDV0R
-[com-img]: https://user-images.githubusercontent.com/50339940/224228295-4ff7c201-975f-4e87-af51-86036a10f289.svg
