@@ -25,7 +25,8 @@ export BlackKarasinski,
        LongstaffSchwartz,
        RendlemanBartter,
        Tian,
-       Vasicek
+       Vasicek,
+       HestonModel
 
 export evaluate
 
@@ -45,5 +46,6 @@ include("models/longstaff_schwartz.jl")
 include("models/rendleman_bartter.jl")
 include("models/tian.jl")
 include("models/vasicek.jl")
+include("models/heston.jl")
 
 end # module
