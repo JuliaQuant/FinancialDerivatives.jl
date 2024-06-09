@@ -49,7 +49,7 @@ function evaluate(O::EuropeanOption, m::HestonModel; N=100)
 end
 
 """
-Characteristic function Heston model for an European call option: 
+Characteristic function Heston model for an European call option from [A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options, L. Heston](https://www.jstor.org/stable/2962057)
 """
 function φ(O::EuropeanOption, m::HestonModel, ω::Number)
     (; v, v̄, κ, ρ) = m
