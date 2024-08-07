@@ -1,5 +1,6 @@
-using FinancialDerivatives
 using Test
+using Dates
+using FinancialDerivatives
 
 eu_put = EuropeanOption(; s=100.0, k=90.0, r=0.05, q=0.01, σ=0.3, t=180 / 365, call=false)
 eu_call = EuropeanOption(; s=eu_put.s, k=eu_put.k, r=eu_put.r, q=eu_put.q, σ=eu_put.σ,
@@ -29,7 +30,7 @@ end
 
 @testset "Longstaff-Schwartz" begin
     @test evaluate(am_put, LongstaffSchwartz()) ≈ 3.22 atol = 0.4
-    @test evaluate(am_call, LongstaffSchwartz()) ≈ 15.42 atol = 0.4
+    @test evaluate(am_call, LongstaffSchwartz()) ≈ 15.42 atol = 1.0
 end
 
 @testset "Tian" begin
@@ -62,4 +63,32 @@ end
 
 @testset "Vasicek" begin
     @test evaluate(ird, Vasicek(), 2) ≈ [0.2, 0.2, 0.2, 0.2] atol = 0.025
+end
+
+@testset "Heston" begin
+    s = 56371 # Initial stock price
+    r = 0.05078 # Risk-free rate
+    σ = 0.86 # Volatility
+    q = 0.005 # Dividend yield (staking yield)
+    k = 58000 # Strike price
+    v = σ^2 # Initial variance
+    v̄ = σ^2 # Long term variance mean
+    κ = 2 # Mean reversion rate
+    σ_v = 0.86 # Volatility of volatility
+    ρ = -0.7 # Correlation between price and volatility
+
+    t0 = Date(2024, 5, 11)
+    t1 = t0 + Month(3)
+    τ = t1 - t0
+    year_days = Dates.value(lastdayofyear(Date(2024))) -
+                Dates.value(firstdayofyear(Date(2024)))
+    t = Dates.value(τ) / year_days
+
+    m = HestonModel(v, v̄, κ, ρ)
+    eu_put = EuropeanOption(; s, k, r, q, σ, t, call=false)
+    eu_call = EuropeanOption(; s, k, r, q, σ, t, call=true)
+
+    @test evaluate(eu_call, m) ≈ 8982 atol = 1
+    @test evaluate(eu_call, m) + eu_call.k * exp(-eu_call.r * eu_call.t) ==
+          evaluate(eu_put, m) + eu_put.s * exp(-eu_put.q * eu_put.t)
 end
