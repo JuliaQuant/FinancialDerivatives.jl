@@ -2,7 +2,7 @@ name = "FinancialDerivatives"
 uuid = "b21666fa-ca8c-11e8-3cc4-33811bd3fa24"
 license = "MIT"
 authors = "Alexandre Brilhante"
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
