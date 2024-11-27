@@ -3,8 +3,9 @@ The `FinancialDerivatives` module provides convenient models for pricing financi
 """
 module FinancialDerivatives
 
-import Distributions: cdf, Normal
-import Statistics: mean
+using Distributions: cdf, Normal
+using Statistics: mean
+using Dates
 
 export InterestRateDerivative,
        AmericanOption,
