@@ -95,6 +95,8 @@ end
     t1 = t0 + Month(3)
 
     m = HestonModel(v, v̄, κ, ρ)
+    eu_put = @test_throws ArgumentError EuropeanOption(; s, k, r, q, σ, t1=t0, t0=t1,
+                                                       call=false)
     eu_put = EuropeanOption(; s, k, r, q, σ, t0, t1, call=false)
     eu_call = EuropeanOption(; s, k, r, q, σ, t0, t1, call=true)
 
