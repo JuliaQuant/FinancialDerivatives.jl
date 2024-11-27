@@ -34,6 +34,14 @@ Abstract type for [swaption](https://en.wikipedia.org/wiki/Swaption).
 """
 abstract type Swaption <: Derivative end
 
+"Compute the time to expiration in years between two dates."
+function time_to_expiration(t0::Date, t1::Date)
+    t1 > t0 || throw(ArgumentError("Expiry date $t1 must be greater than issue date $t0"))
+    τ = t1 - t0
+    year_days = Dates.value(lastdayofyear(t0)) - Dates.value(firstdayofyear(t0))
+    return Dates.value(τ) / year_days
+end
+
 """
     InterestRateDerivative(k, r, σ, θ, t)
 
@@ -46,12 +54,18 @@ abstract type Swaption <: Derivative end
 - `θ`: long term mean level
 - `t`: time interval
 """
-@kwdef struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real}
+struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real}
     k::KT
     r::RT
     σ::σT
     θ::θT
     t::TT
+end
+
+"Construct `InterestRateDerivative` with parameters and start `t0` and final `t1` `Date`s."
+function InterestRateDerivative(; k::Real, r::Real, σ::Real, θ::Real, t0::Date, t1::Date)
+    t = time_to_expiration(t0, t1)
+    return InterestRateDerivative(k, r, σ, θ, t)
 end
 
 """
@@ -67,13 +81,20 @@ end
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-@kwdef struct AmericanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+struct AmericanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
     s::ST
     k::KT
     r::RT
     σ::σT
     t::TT
     call::Bool
+end
+
+"Construct [`AmericanOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
+function AmericanOption(; s::Real, k::Real, r::Real, σ::Real, t0::Date, t1::Date,
+                        call::Bool)
+    t = time_to_expiration(t0, t1)
+    return AmericanOption(s, k, r, σ, t, call)
 end
 
 """
@@ -89,13 +110,19 @@ end
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-@kwdef struct AsianOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
+struct AsianOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
     s::ST
     k::KT
     r::RT
     σ::σT
     t::TT
     call::Bool
+end
+
+"Construct [`AsianOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
+function AsianOption(; s::Real, k::Real, r::Real, σ::Real, t0::Date, t1::Date, call::Bool)
+    t = time_to_expiration(t0, t1)
+    return AsianOption(s, k, r, σ, t, call)
 end
 
 """
@@ -112,8 +139,8 @@ end
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-@kwdef struct EuropeanOption{ST<:Real,KT<:Real,RT<:Real,QT<:Real,σT<:Real,TT<:Real} <:
-              Option
+struct EuropeanOption{ST<:Real,KT<:Real,RT<:Real,QT<:Real,σT<:Real,TT<:Real} <:
+       Option
     s::ST
     k::KT
     r::RT
@@ -121,6 +148,13 @@ end
     σ::σT
     t::TT
     call::Bool
+end
+
+"Construct [`EuropeanOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
+function EuropeanOption(; s::Real, k::Real, r::Real, q::Real, σ::Real, t0::Date, t1::Date,
+                        call::Bool)
+    t = time_to_expiration(t0, t1)
+    return EuropeanOption(s, k, r, q, σ, t, call)
 end
 
 """
@@ -137,7 +171,7 @@ end
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-@kwdef struct FXOption{ST<:Real,KT<:Real,RDT<:Real,RFT<:Real,σT<:Real,TT<:Real} <: Option
+struct FXOption{ST<:Real,KT<:Real,RDT<:Real,RFT<:Real,σT<:Real,TT<:Real} <: Option
     s::ST
     k::KT
     r_d::RDT
@@ -145,4 +179,11 @@ end
     σ::σT
     t::TT
     call::Bool
+end
+
+"Construct [`FXOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
+function FXOption(; s::Real, k::Real, r_d::Real, r_f::Real, σ::Real, t0::Date, t1::Date,
+                  call::Bool)
+    t = time_to_expiration(t0, t1)
+    return FXOption(s, k, r_d, r_f, σ, t, call)
 end

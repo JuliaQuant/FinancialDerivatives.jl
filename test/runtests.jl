@@ -2,9 +2,23 @@ using Test
 using Dates
 using FinancialDerivatives
 
-eu_put = EuropeanOption(; s=100.0, k=90.0, r=0.05, q=0.01, σ=0.3, t=180 / 365, call=false)
-eu_call = EuropeanOption(; s=eu_put.s, k=eu_put.k, r=eu_put.r, q=eu_put.q, σ=eu_put.σ,
-                         t=eu_put.t, call=true)
+s = 100.0
+k = 90.0
+r = 0.05
+q = 0.01
+σ = 0.3
+t = 180 / 365
+call = false
+
+eu_put = EuropeanOption(s, k, r, q, σ, t, call)
+call = true
+eu_call = EuropeanOption(eu_put.s,
+                         eu_put.k,
+                         eu_put.r,
+                         eu_put.q,
+                         eu_put.σ,
+                         eu_put.t,
+                         call)
 
 am_put = AmericanOption(100.0, 90.0, 0.05, 0.3, 180 / 365, false)
 am_call = AmericanOption(100.0, 90.0, 0.05, 0.3, 180 / 365, true)
@@ -79,16 +93,16 @@ end
 
     t0 = Date(2024, 5, 11)
     t1 = t0 + Month(3)
-    τ = t1 - t0
-    year_days = Dates.value(lastdayofyear(Date(2024))) -
-                Dates.value(firstdayofyear(Date(2024)))
-    t = Dates.value(τ) / year_days
 
     m = HestonModel(v, v̄, κ, ρ)
-    eu_put = EuropeanOption(; s, k, r, q, σ, t, call=false)
-    eu_call = EuropeanOption(; s, k, r, q, σ, t, call=true)
+    eu_put = @test_throws ArgumentError EuropeanOption(; s, k, r, q, σ, t1=t0, t0=t1,
+                                                       call=false)
+    eu_put = EuropeanOption(; s, k, r, q, σ, t0, t1, call=false)
+    eu_call = EuropeanOption(; s, k, r, q, σ, t0, t1, call=true)
 
-    @test evaluate(eu_call, m) ≈ 8982 atol = 1
-    @test evaluate(eu_call, m) + eu_call.k * exp(-eu_call.r * eu_call.t) ==
-          evaluate(eu_put, m) + eu_put.s * exp(-eu_put.q * eu_put.t)
+    @testset "Heston" begin
+        @test evaluate(eu_call, m) ≈ 8982 atol = 1
+        @test evaluate(eu_call, m) + eu_call.k * exp(-eu_call.r * eu_call.t) ==
+              evaluate(eu_put, m) + eu_put.s * exp(-eu_put.q * eu_put.t)
+    end
 end
