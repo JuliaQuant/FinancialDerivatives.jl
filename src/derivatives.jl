@@ -36,7 +36,7 @@ abstract type Swaption <: Derivative end
 
 "Compute the time to expiration in years between two dates."
 function time_to_expiration(t0::Date, t1::Date)
-    t1 > t0 || throw(ArgumentError("Expiry date $t1 must be greater issue date $t0"))
+    t1 > t0 || throw(ArgumentError("Expiry date $t1 must be greater than issue date $t0"))
     τ = t1 - t0
     year_days = Dates.value(lastdayofyear(t0)) - Dates.value(firstdayofyear(t0))
     return Dates.value(τ) / year_days
