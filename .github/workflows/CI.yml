@@ -31,7 +31,7 @@ jobs:
             arch: x64
             version: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}
@@ -52,7 +52,7 @@ jobs:
       contents: write
     continue-on-error: true  # Remove this after fixing docs adding Documenter Keys on CI
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: julia-actions/setup-julia@v2
         with:
           version: '1'
