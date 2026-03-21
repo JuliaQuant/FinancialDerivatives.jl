@@ -55,3 +55,7 @@ function evaluate(O::AmericanOption, m::LongstaffSchwartz, N::Int64=1000, P::Int
         return max(mean(V), O.s - O.k)
     end
 end
+
+function price(engine::MonteCarloEngine, option::AmericanOption, model::LongstaffSchwartz, ::EquityMarketData)
+    evaluate(option, model, engine.num_steps, engine.num_paths)
+end

@@ -1,7 +1,7 @@
 """
 Abstract type for [derivative contract](https://en.wikipedia.org/wiki/Derivative_(finance)).
 """
-abstract type Derivative end
+abstract type Derivative <: FinancialInstrument end
 
 """
 Abstract type for [forward contract](https://en.wikipedia.org/wiki/Forward_contract).
@@ -54,7 +54,7 @@ end
 - `θ`: long term mean level
 - `t`: time interval
 """
-struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real}
+struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real} <: FinancialInstrument
     k::KT
     r::RT
     σ::σT

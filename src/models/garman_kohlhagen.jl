@@ -25,3 +25,7 @@ function evaluate(O::FXOption, m::GarmanKohlhagen)
                O.k * exp(-O.r_d * O.t) * cdf(Normal(), d2)
     end
 end
+
+function price(::AnalyticEngine, option::FXOption, model::GarmanKohlhagen, ::FXMarketData)
+    evaluate(option, model)
+end

@@ -40,3 +40,7 @@ function evaluate(O::Option, m::Tian, N::Int64=1000)
 
     return Z[1]
 end
+
+function price(engine::BinomialEngine, option::Option, model::Tian, ::EquityMarketData)
+    evaluate(option, model, engine.steps)
+end
