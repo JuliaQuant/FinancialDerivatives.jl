@@ -41,6 +41,7 @@ function evaluate(O::Option, m::CoxRossRubinstein, N::Int64=1000)
     return Z[1]
 end
 
-function price(engine::BinomialEngine, option::Option, model::CoxRossRubinstein, ::EquityMarketData)
-    evaluate(option, model, engine.steps)
+function price(engine::BinomialEngine, option::Option, model::CoxRossRubinstein,
+               ::EquityMarketData)
+    return evaluate(option, model, engine.steps)
 end

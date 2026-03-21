@@ -27,5 +27,5 @@ function evaluate(O::FXOption, m::GarmanKohlhagen)
 end
 
 function price(::AnalyticEngine, option::FXOption, model::GarmanKohlhagen, ::FXMarketData)
-    evaluate(option, model)
+    return evaluate(option, model)
 end

@@ -54,7 +54,8 @@ end
 - `θ`: long term mean level
 - `t`: time interval
 """
-struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real} <: FinancialInstrument
+struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real} <:
+       FinancialInstrument
     k::KT
     r::RT
     σ::σT

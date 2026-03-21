@@ -31,7 +31,8 @@ Base.@kwdef struct FXMarketData{S<:Real,RD<:Real,RF<:Real,V<:Real} <: AbstractMa
 end
 
 "Market observables required to price interest-rate derivatives."
-Base.@kwdef struct InterestRateMarketData{R<:Real,V<:Real,K<:Real,Θ<:Real} <: AbstractMarketData
+Base.@kwdef struct InterestRateMarketData{R<:Real,V<:Real,K<:Real,Θ<:Real} <:
+                   AbstractMarketData
     "Current short-term interest rate"
     short_rate::R
     "Instantaneous rate volatility"

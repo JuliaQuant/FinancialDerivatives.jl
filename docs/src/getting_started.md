@@ -10,13 +10,16 @@ pkg> add FinancialDerivatives
 
 ## Usage
 
-To price an European option, simply create a new `EuropeanOption` and pass it to `evaluate` with the desired valuation model:
+To price a European option, create an `EuropeanOption`, an `EquityMarketData` with the current
+market observables, and call `price` with the desired engine and model:
 
 ```julia
 julia> using FinancialDerivatives
 
-julia> euro_put = EuropeanOption(100.0, 90.0, 0.05, 0.3, 180/365, true)
+julia> md = EquityMarketData(spot_price=100.0, risk_free_rate=0.05, dividend_yield=0.0, volatility=0.3)
 
-julia> evaluate(euro_put, BlackScholes())
+julia> opt = EuropeanOption(100.0, 90.0, 0.05, 0.0, 0.3, 180/365, false)
+
+julia> price(AnalyticEngine(), opt, BlackScholes(), md)
 3.2281936525908073
 ```

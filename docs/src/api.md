@@ -1,6 +1,6 @@
 # API
 
-## Derivatives
+## Instruments
 
 ```@docs
 AmericanOption
@@ -8,6 +8,25 @@ AsianOption
 EuropeanOption
 FXOption
 InterestRateDerivative
+```
+
+## Market Data
+
+```@docs
+FinancialDerivatives.MarketData.AbstractMarketData
+EquityMarketData
+FXMarketData
+InterestRateMarketData
+```
+
+## Pricing Engines
+
+```@docs
+FinancialDerivatives.Engines.PricingEngine
+AnalyticEngine
+BinomialEngine
+MonteCarloEngine
+FiniteDifferenceEngine
 ```
 
 ## Models
@@ -19,6 +38,7 @@ BrennanSchwartz
 CoxIngersollRoss
 CoxRossRubinstein
 GarmanKohlhagen
+HestonModel
 JarrowRudd
 LeisenReimer
 LongstaffSchwartz
@@ -27,19 +47,19 @@ Tian
 Vasicek
 ```
 
-## Evaluation
+## Pricing
 
 ```@docs
-evaluate
+price
 ```
 
 ## Private
 
 ```@docs
-FinancialDerivatives.Derivative
-FinancialDerivatives.Forward
-FinancialDerivatives.Future
-FinancialDerivatives.Option
-FinancialDerivatives.Swap
-FinancialDerivatives.Swaption
+FinancialDerivatives.Instruments.Derivative
+FinancialDerivatives.Instruments.Forward
+FinancialDerivatives.Instruments.Future
+FinancialDerivatives.Instruments.Option
+FinancialDerivatives.Instruments.Swap
+FinancialDerivatives.Instruments.Swaption
 ```

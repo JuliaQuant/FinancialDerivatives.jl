@@ -24,6 +24,7 @@ function evaluate(IRD::InterestRateDerivative, m::BrennanSchwartz, n::Int64=12)
     return rates
 end
 
-function price(engine::BinomialEngine, ird::InterestRateDerivative, model::BrennanSchwartz, ::InterestRateMarketData)
-    evaluate(ird, model, engine.steps)
+function price(engine::BinomialEngine, ird::InterestRateDerivative, model::BrennanSchwartz,
+               ::InterestRateMarketData)
+    return evaluate(ird, model, engine.steps)
 end

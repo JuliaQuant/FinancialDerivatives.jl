@@ -45,6 +45,7 @@ function evaluate(O::Option, m::LeisenReimer, N::Int64=1001)
     return Z[1]
 end
 
-function price(engine::BinomialEngine, option::Option, model::LeisenReimer, ::EquityMarketData)
-    evaluate(option, model, engine.steps)
+function price(engine::BinomialEngine, option::Option, model::LeisenReimer,
+               ::EquityMarketData)
+    return evaluate(option, model, engine.steps)
 end

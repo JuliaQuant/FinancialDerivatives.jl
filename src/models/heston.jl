@@ -68,6 +68,7 @@ function φ(O::EuropeanOption, m::HestonModel, ω::Number)
     return exp(C * v̄ + D * v + im * ω * log(s * exp((r - q) * t)))
 end
 
-function price(::AnalyticEngine, option::EuropeanOption, model::HestonModel, ::EquityMarketData)
-    evaluate(option, model)
+function price(::AnalyticEngine, option::EuropeanOption, model::HestonModel,
+               ::EquityMarketData)
+    return evaluate(option, model)
 end

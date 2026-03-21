@@ -56,6 +56,7 @@ function evaluate(O::AmericanOption, m::LongstaffSchwartz, N::Int64=1000, P::Int
     end
 end
 
-function price(engine::MonteCarloEngine, option::AmericanOption, model::LongstaffSchwartz, ::EquityMarketData)
-    evaluate(option, model, engine.num_steps, engine.num_paths)
+function price(engine::MonteCarloEngine, option::AmericanOption, model::LongstaffSchwartz,
+               ::EquityMarketData)
+    return evaluate(option, model, engine.num_steps, engine.num_paths)
 end
