@@ -1,3 +1,14 @@
+module RendlemanBartterModule
+
+using Reexport
+using ...Engines
+using ...Instruments
+using ...MarketData
+import ..Model
+@reexport import ...Engines: price
+
+export RendlemanBartter
+
 """
     RendlemanBartter()
 
@@ -5,15 +16,10 @@
 """
 struct RendlemanBartter <: Model end
 
-"""
-    evaluate(IRD, RendlemanBartter(), n = 12)
-
-Evaluate interest rate derivative `IRD` using `RendlemanBartter` model.
-
-# Arguments
-- `n`: number of paths to simulate
-"""
-function evaluate(IRD::InterestRateDerivative, m::RendlemanBartter, n::Int64=12)
+function price(engine::BinomialEngine, ird::InterestRateDerivative, ::RendlemanBartter,
+               ::InterestRateMarketData)
+    IRD = ird
+    n = engine.steps
     Δt = IRD.t / n
     rates = [IRD.r]
     for i in 0:n
@@ -23,16 +29,11 @@ function evaluate(IRD::InterestRateDerivative, m::RendlemanBartter, n::Int64=12)
     return rates
 end
 
-"""
-    evaluate(O, RendlemanBartter(), k = 1, N = 1000)
-
-Evaluate option `O` using `RendlemanBartter` model.
-
-# Arguments
-- `k`:
-- `N`: 
-"""
-function evaluate(O::Option, m::RendlemanBartter, k::Int64=1, N::Int64=1000)
+function price(engine::BinomialEngine, option::Option, ::RendlemanBartter,
+               ::EquityMarketData)
+    O = option
+    N = engine.steps
+    k = 1
     Δt = O.t / N
     p = 1 / (1 + k^2)
     q = 1 - p
@@ -56,12 +57,4 @@ function evaluate(O::Option, m::RendlemanBartter, k::Int64=1, N::Int64=1000)
     return Z[1]
 end
 
-function price(engine::BinomialEngine, ird::InterestRateDerivative, model::RendlemanBartter,
-               ::InterestRateMarketData)
-    return evaluate(ird, model, engine.steps)
-end
-
-function price(engine::BinomialEngine, option::Option, model::RendlemanBartter,
-               ::EquityMarketData)
-    return evaluate(option, model, 1, engine.steps)
-end
+end # module RendlemanBartterModule

@@ -1,3 +1,14 @@
+module CoxRossRubinsteinModule
+
+using Reexport
+using ...Engines
+using ...Instruments
+using ...MarketData
+import ..Model
+@reexport import ...Engines: price
+
+export CoxRossRubinstein
+
 """
     CoxRossRubinstein()
 
@@ -5,16 +16,10 @@
 """
 struct CoxRossRubinstein <: Model end
 
-"""
-    evaluate(O, CoxRossRubinstein(), N = 1000)
-
-Evaluate option `O` using `CoxRossRubinstein`.
-
-# Arguments
-- `O::Option`: option
-- `N`: number of paths to simulate
-"""
-function evaluate(O::Option, m::CoxRossRubinstein, N::Int64=1000)
+function price(engine::BinomialEngine, option::Option, ::CoxRossRubinstein,
+               ::EquityMarketData)
+    O = option
+    N = engine.steps
     Δt = O.t / N
     U = exp(O.σ * √Δt)
     D = exp(-O.σ * √Δt)
@@ -41,7 +46,4 @@ function evaluate(O::Option, m::CoxRossRubinstein, N::Int64=1000)
     return Z[1]
 end
 
-function price(engine::BinomialEngine, option::Option, model::CoxRossRubinstein,
-               ::EquityMarketData)
-    return evaluate(option, model, engine.steps)
-end
+end # module CoxRossRubinsteinModule

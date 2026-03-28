@@ -1,3 +1,15 @@
+module LongstaffSchwartzModule
+
+using Reexport
+using Statistics: mean
+using ...Engines
+using ...Instruments
+using ...MarketData
+import ..Model
+@reexport import ...Engines: price
+
+export LongstaffSchwartz
+
 """
     LongstaffSchwartz()
 
@@ -5,16 +17,11 @@
 """
 struct LongstaffSchwartz <: Model end
 
-"""
-    evaluate(O, LongstaffSchwartz(), N = 1000, P = 10000)
-
-Evaluate option `O` using `LongstaffSchwartz` binomial model.
-
-# Arguments
-- `N`: number of paths to simulate
-- `P`: number of periods
-"""
-function evaluate(O::AmericanOption, m::LongstaffSchwartz, N::Int64=1000, P::Int64=10000)
+function price(engine::MonteCarloEngine, option::AmericanOption, ::LongstaffSchwartz,
+               ::EquityMarketData)
+    O = option
+    N = engine.num_steps
+    P = engine.num_paths
     Δt = O.t / N
     R = exp(O.r * Δt)
     T = typeof(O.s * exp(-O.σ^2 * Δt / 2 + O.σ * √Δt * 0.1) / R)
@@ -56,7 +63,4 @@ function evaluate(O::AmericanOption, m::LongstaffSchwartz, N::Int64=1000, P::Int
     end
 end
 
-function price(engine::MonteCarloEngine, option::AmericanOption, model::LongstaffSchwartz,
-               ::EquityMarketData)
-    return evaluate(option, model, engine.num_steps, engine.num_paths)
-end
+end # module LongstaffSchwartzModule

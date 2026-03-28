@@ -1,3 +1,14 @@
+module TianModule
+
+using Reexport
+using ...Engines
+using ...Instruments
+using ...MarketData
+import ..Model
+@reexport import ...Engines: price
+
+export Tian
+
 """
     Tian()
 
@@ -5,15 +16,9 @@
 """
 struct Tian <: Model end
 
-"""
-    evaluate(O, Tian(), N = 1000)
-
-Evaluate option `O` using `Tian` binomial model.
-
-# Arguments
-`N`: number of paths to simulate
-"""
-function evaluate(O::Option, m::Tian, N::Int64=1000)
+function price(engine::BinomialEngine, option::Option, ::Tian, ::EquityMarketData)
+    O = option
+    N = engine.steps
     Δt = O.t / N
     R = exp(O.r * Δt)
     v = exp(O.σ^2 * Δt)
@@ -41,6 +46,4 @@ function evaluate(O::Option, m::Tian, N::Int64=1000)
     return Z[1]
 end
 
-function price(engine::BinomialEngine, option::Option, model::Tian, ::EquityMarketData)
-    return evaluate(option, model, engine.steps)
-end
+end # module TianModule
