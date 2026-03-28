@@ -55,3 +55,13 @@ function evaluate(O::Option, m::RendlemanBartter, k::Int64=1, N::Int64=1000)
 
     return Z[1]
 end
+
+function price(engine::BinomialEngine, ird::InterestRateDerivative, model::RendlemanBartter,
+               ::InterestRateMarketData)
+    return evaluate(ird, model, engine.steps)
+end
+
+function price(engine::BinomialEngine, option::Option, model::RendlemanBartter,
+               ::EquityMarketData)
+    return evaluate(option, model, 1, engine.steps)
+end

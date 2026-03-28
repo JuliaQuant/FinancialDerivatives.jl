@@ -23,3 +23,8 @@ function evaluate(IRD::InterestRateDerivative, m::BlackKarasinski, n::Int64=12)
     end
     return rates
 end
+
+function price(engine::BinomialEngine, ird::InterestRateDerivative, model::BlackKarasinski,
+               ::InterestRateMarketData)
+    return evaluate(ird, model, engine.steps)
+end

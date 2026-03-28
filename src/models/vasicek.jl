@@ -23,3 +23,8 @@ function evaluate(IRD::InterestRateDerivative, m::Vasicek, n::Int64=12)
     end
     return rates
 end
+
+function price(engine::BinomialEngine, ird::InterestRateDerivative, model::Vasicek,
+               ::InterestRateMarketData)
+    return evaluate(ird, model, engine.steps)
+end

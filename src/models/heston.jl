@@ -3,7 +3,7 @@ using QuadGK: quadgk
 """
 [Heston model](https://en.wikipedia.org/wiki/Heston_model).
 """
-@kwdef struct HestonModel{VT<:Real,VVT<:Real,KT<:Real,RT<:Real}
+@kwdef struct HestonModel{VT<:Real,VVT<:Real,KT<:Real,RT<:Real} <: Model
     "Initial stock variance"
     v::VT
     "Long term variance mean"
@@ -66,4 +66,9 @@ function φ(O::EuropeanOption, m::HestonModel, ω::Number)
     D = r₋ * (1 - exp(-h * t)) / (1 - g * exp(-h * t))
 
     return exp(C * v̄ + D * v + im * ω * log(s * exp((r - q) * t)))
+end
+
+function price(::AnalyticEngine, option::EuropeanOption, model::HestonModel,
+               ::EquityMarketData)
+    return evaluate(option, model)
 end

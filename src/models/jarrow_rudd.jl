@@ -46,3 +46,8 @@ function evaluate(O::Option, m::JarrowRudd, risk_neutral::Bool=true, N::Int64=10
 
     return Z[1]
 end
+
+function price(engine::BinomialEngine, option::Option, model::JarrowRudd,
+               ::EquityMarketData)
+    return evaluate(option, model, true, engine.steps)
+end
