@@ -1,3 +1,14 @@
+module LeisenReimerModule
+
+using Reexport
+using ...Engines
+using ...Instruments
+using ...MarketData
+import ..Model
+@reexport import ...Engines: price
+
+export LeisenReimer
+
 """
     LeisenReimer()
 
@@ -10,15 +21,9 @@ function h(z::T, n::Int64) where {T<:Number}
            sign(z) * 0.5 * sqrt(1 - exp(-((z / (n + 1.0 / 3.0))^2.0) * (n + 1.0 / 6.0)))
 end
 
-"""
-    evaluate(O, LeisenReimer(), N = 1001)
-
-Evaluate option `O` using `LeisenReimer` binomial model.
-
-# Arguments
-- `N`: number of paths to simulate, must be odd
-"""
-function evaluate(O::Option, m::LeisenReimer, N::Int64=1001)
+function price(engine::BinomialEngine, option::Option, ::LeisenReimer, ::EquityMarketData)
+    O = option
+    N = engine.steps
     Δt = 0.01 # O.t / N
     R = exp(O.r * Δt)
     d1 = (log(O.s / O.k) + (O.r + O.σ^2 / 2) * O.t) / (O.σ * √O.t)
@@ -45,7 +50,4 @@ function evaluate(O::Option, m::LeisenReimer, N::Int64=1001)
     return Z[1]
 end
 
-function price(engine::BinomialEngine, option::Option, model::LeisenReimer,
-               ::EquityMarketData)
-    return evaluate(option, model, engine.steps)
-end
+end # module LeisenReimerModule

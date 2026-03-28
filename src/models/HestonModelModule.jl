@@ -1,4 +1,15 @@
+module HestonModelModule
+
+using Reexport
 using QuadGK: quadgk
+using ...Engines
+using ...Instruments
+using ...MarketData
+import ..Model
+
+@reexport import ...Engines: price
+
+export HestonModel
 
 """
 [Heston model](https://en.wikipedia.org/wiki/Heston_model).
@@ -12,40 +23,6 @@ using QuadGK: quadgk
     κ::KT
     "Correlation between stock price `s` and it's variance `v`"
     ρ::RT
-end
-
-""""
-Evaluate option `O` using the [`HestonModel`](@ref) model.
-"""
-function evaluate(O::EuropeanOption, m::HestonModel; N=100)
-    k, t, s, q, r, σ = O.k, O.t, O.s, O.q, O.r, O.σ
-    κ, v̄ = m.κ, m.v̄
-
-    2 * κ * v̄ ≥ σ^2 ||
-        throw(ArgumentError("The Feller condition is not satisfied: 2κθ ≥ σ^2"))
-
-    function integrand1(ω)
-        return real(exp(-im * ω * log(k)) * φ(O, m, ω - im) /
-                    (im * ω * φ(O, m, -im)))
-    end
-
-    function integrand2(ω)
-        return real(exp(-im * ω * log(k)) * φ(O, m, ω) /
-                    (im * ω))
-    end
-
-    π1, _ = quadgk(integrand1, 0, N)
-    π2, _ = quadgk(integrand2, 0, N)
-
-    π1 = π1 / π + 0.5
-    π2 = π2 / π + 0.5
-
-    C = s * exp(-q * t) * π1 - k * exp(-r * t) * π2
-    if iscall(O)
-        C
-    elseif isput(O) # Calculate the put option value using put-call parity
-        P = C + k * exp(-r * t) - s * exp(-q * t)
-    end
 end
 
 """
@@ -69,6 +46,33 @@ function φ(O::EuropeanOption, m::HestonModel, ω::Number)
 end
 
 function price(::AnalyticEngine, option::EuropeanOption, model::HestonModel,
-               ::EquityMarketData)
-    return evaluate(option, model)
+               ::EquityMarketData; N=100)
+    O = option
+    m = model
+    k, t, s, q, r, σ = O.k, O.t, O.s, O.q, O.r, O.σ
+    κ, v̄ = m.κ, m.v̄
+
+    2 * κ * v̄ ≥ σ^2 ||
+        throw(ArgumentError("The Feller condition is not satisfied: 2κθ ≥ σ^2"))
+
+    integrand1(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(O, m, ω - im) /
+                                     (im * ω * φ(O, m, -im)))
+
+    integrand2(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(O, m, ω) /
+                                     (im * ω))
+
+    π1, _ = quadgk(integrand1, 0, N)
+    π2, _ = quadgk(integrand2, 0, N)
+
+    π1 = π1 / π + 0.5
+    π2 = π2 / π + 0.5
+
+    C = s * exp(-q * t) * π1 - k * exp(-r * t) * π2
+    if iscall(O)
+        C
+    elseif isput(O)
+        P = C + k * exp(-r * t) - s * exp(-q * t)
+    end
 end
+
+end # module HestonModelModule

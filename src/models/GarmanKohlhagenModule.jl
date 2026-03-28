@@ -1,3 +1,15 @@
+module GarmanKohlhagenModule
+
+using Reexport
+using Distributions: cdf, Normal
+using ...Engines
+using ...Instruments
+using ...MarketData
+import ..Model
+@reexport import ...Engines: price
+
+export GarmanKohlhagen
+
 """
     GarmanKohlhagen()
 
@@ -5,15 +17,8 @@
 """
 struct GarmanKohlhagen <: Model end
 
-"""
-    evaluate(O::FXOption, GarmanKohlhagen())
-
-Evaluate FX Option using `GarmanKohlhagen` model.
-
-# Arguments
-- `O::FXOption`
-"""
-function evaluate(O::FXOption, m::GarmanKohlhagen)
+function price(::AnalyticEngine, option::FXOption, ::GarmanKohlhagen, ::FXMarketData)
+    O = option
     d1 = (log(O.s / O.k) + (O.r_d - O.r_f * O.σ / 2) * O.t) / (O.σ * √O.t)
     d2 = d1 - O.σ * √O.t
 
@@ -26,6 +31,4 @@ function evaluate(O::FXOption, m::GarmanKohlhagen)
     end
 end
 
-function price(::AnalyticEngine, option::FXOption, model::GarmanKohlhagen, ::FXMarketData)
-    return evaluate(option, model)
-end
+end # module GarmanKohlhagenModule
