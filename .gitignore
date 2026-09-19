@@ -4,3 +4,8 @@
 docs/build/
 build
 .vscode
+
+# A library pins no manifest: each Julia version resolves its own from the
+# compat bounds in Project.toml.
+/Manifest.toml
+/docs/Manifest.toml
