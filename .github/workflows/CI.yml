@@ -14,11 +14,17 @@ jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
+    # A break on the unreleased 'pre' channel must not turn the whole run red.
+    continue-on-error: ${{ matrix.version == 'pre' }}
     strategy:
       fail-fast: false
       matrix:
         version:
+          # 'lts' matches the julia = "1.10" compat floor in Project.toml,
+          # '1' resolves to the latest stable release (1.13), 'pre' to the next one.
+          - 'lts'
           - '1'
+          - 'pre'
         os:
           - ubuntu-latest
         arch:
@@ -26,10 +32,10 @@ jobs:
         include:
           - os: macOS-latest
             arch: x64
-            version: 1
+            version: '1'
           - os: windows-latest
             arch: x64
-            version: 1
+            version: '1'
     steps:
       - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
