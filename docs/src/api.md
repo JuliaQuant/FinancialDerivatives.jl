@@ -3,6 +3,7 @@
 ## Instruments
 
 ```@docs
+FinancialInstrument
 AmericanOption
 AsianOption
 EuropeanOption
@@ -32,6 +33,7 @@ FiniteDifferenceEngine
 ## Models
 
 ```@docs
+FinancialDerivatives.Models.Model
 BlackKarasinski
 BlackScholes
 BrennanSchwartz
