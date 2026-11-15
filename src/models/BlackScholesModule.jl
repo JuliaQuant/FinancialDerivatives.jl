@@ -23,12 +23,11 @@ closed-form Black-Scholes-Merton formula.
 """
 function price(::AnalyticEngine, option::EuropeanOption, ::BlackScholes,
                md::EquityMarketData)
+    (; k, t) = option
     S = md.spot_price
     r = md.risk_free_rate
     q = md.dividend_yield
     σ = md.volatility
-    k = option.k
-    t = option.t
 
     d1 = (log(S / k) + (r - q + σ^2 / 2) * t) / (σ * √t)
     d2 = d1 - σ * √t

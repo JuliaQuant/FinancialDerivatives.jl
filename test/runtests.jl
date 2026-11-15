@@ -1,5 +1,7 @@
 using Test
 using Dates
+using Random
+using Statistics
 using FinancialDerivatives
 
 # --- Equity options ---
@@ -18,11 +20,6 @@ fx_md = FXMarketData(; spot_price=100.0, domestic_rate=0.05, foreign_rate=0.025,
                      volatility=0.3)
 fxp = FXOption(100.0, 90.0, 0.05, 0.025, 0.3, 180 / 365, false)
 fxc = FXOption(100.0, 90.0, 0.05, 0.025, 0.3, 180 / 365, true)
-
-# --- Interest rate derivatives ---
-ir_md = InterestRateMarketData(; short_rate=0.20, volatility=0.01,
-                               mean_reversion_speed=0.01875, long_term_mean=0.012)
-ird = InterestRateDerivative(0.01875, 0.20, 0.01, 0.012, 180 / 365)
 
 @testset "Black-Scholes" begin
     @test price(AnalyticEngine(), eu_put, BlackScholes(), eu_md) ≈ 3.34 atol = 0.1
@@ -59,25 +56,45 @@ end
     @test price(AnalyticEngine(), fxc, GarmanKohlhagen(), fx_md) ≈ 14.48 atol = 0.25
 end
 
-@testset "Black-Karasinski" begin
-    @test price(BinomialEngine(steps=2), ird, BlackKarasinski(), ir_md) ≈
-          [0.2, 0.2, 0.2, 0.2] atol = 0.25
-end
-
-@testset "Brennan-Schwartz" begin
-    @test price(BinomialEngine(steps=2), ird, BrennanSchwartz(), ir_md) ≈
-          [0.2, 0.2, 0.2, 0.2] atol = 0.25
-end
-
 @testset "Rendleman-Bartter" begin
     @test price(BinomialEngine(), am_put, RendlemanBartter(), am_md) ≈ 3.22 atol = 0.25
     @test price(BinomialEngine(), am_call, RendlemanBartter(), am_md) ≈ 15.42 atol = 0.25
-    @test price(BinomialEngine(steps=2), ird, RendlemanBartter(), ir_md) ≈
-          [0.2, 0.2, 0.2, 0.2] atol = 0.025
 end
 
-@testset "Vasicek" begin
-    @test price(BinomialEngine(steps=2), ird, Vasicek(), ir_md) ≈ [0.2, 0.2, 0.2, 0.2] atol = 0.025
+@testset "Short-rate paths" begin
+    k, r, σ, θ, t = 1.0, 0.1, 0.2, 0.05, 1.0
+    steps, paths = 200, 5_000
+    ird = InterestRateDerivative(k, r, σ, θ, t)
+    md = InterestRateMarketData(; short_rate=r, volatility=σ, mean_reversion_speed=k,
+                                long_term_mean=θ)
+
+    # Exact mean and standard deviation at expiry, of the rate or of its logarithm.
+    decay = exp(-k * t)
+    rate_mean = θ + (r - θ) * decay
+    ou_std = σ * √((1 - decay^2) / (2k))
+    a = 2k - σ^2
+    decay2 = exp(-a * t)
+    bs_integral = θ * (1 - decay2) / a + (r - θ) * (decay - decay2) / (a - k)
+    bs_second_moment = r^2 * decay2 + 2k * θ * bs_integral
+    cir_var = r * σ^2 / k * (decay - decay^2) + θ * σ^2 / (2k) * (1 - decay)^2
+    cases = [(Vasicek(), identity, rate_mean, ou_std),
+             (BrennanSchwartz(), identity, rate_mean, √(bs_second_moment - rate_mean^2)),
+             (CoxIngersollRoss(), identity, rate_mean, √cir_var),
+             (BlackKarasinski(), log, log(θ) + (log(r) - log(θ)) * decay, ou_std),
+             (RendlemanBartter(), log, log(r) + (θ - σ^2 / 2) * t, σ * √t)]
+
+    Random.seed!(60)
+    for (model, scale, μ, s) in cases
+        sims = [price(BinomialEngine(; steps), ird, model, md) for _ in 1:paths]
+        @test all(length.(sims) .== steps + 1)
+        final = scale.(last.(sims))
+        @test mean(final) ≈ μ atol = 5s / √paths
+        @test std(final) ≈ s rtol = 0.1
+    end
+
+    # Shocks this large push the simulated rate below zero.
+    wild = InterestRateDerivative(k, 0.01, 2.0, 0.01, t)
+    @test all(isfinite, price(BinomialEngine(; steps), wild, CoxIngersollRoss(), md))
 end
 
 @testset "Heston" begin

@@ -12,19 +12,30 @@ export BlackKarasinski
 """
     BlackKarasinski()
 
-[Black-Karasinski model](https://en.wikipedia.org/wiki/Black%E2%80%93Karasinski_model).
+Select the [Black-Karasinski model](https://en.wikipedia.org/wiki/Black%E2%80%93Karasinski_model) of the short rate.
+
+The logarithm of the short rate `r` follows `d ln r = k (ln θ - ln r) dt + σ dW`. The short
+rate is always positive. `θ` is a rate. `ln θ` is the long-term mean of `ln r`.
+
+The [`InterestRateDerivative`](@ref) supplies `k`, `θ`, `σ` and the initial rate. `θ` and the
+initial rate. 
+
+# References
+- Black, F., and Karasinski, P. (1991). Bond and option pricing when short rates are
+  lognormal. *Financial Analysts Journal*, 47(4), 52-59.
+  [doi:10.2469/faj.v47.n4.52](https://doi.org/10.2469/faj.v47.n4.52)
 """
 struct BlackKarasinski <: Model end
 
-function price(engine::BinomialEngine, ird::InterestRateDerivative, ::BlackKarasinski,
+function price((; steps)::BinomialEngine, (; k, r, σ, θ, t)::InterestRateDerivative,
+               ::BlackKarasinski,
                ::InterestRateMarketData)
-    IRD = ird
-    n = engine.steps
-    Δt = IRD.t / n
-    rates = [IRD.r]
-    for i in 0:n
-        dr = IRD.k * (IRD.θ - log(rates[end])) * Δt + IRD.σ * rates[end] * randn()
-        append!(rates, rates[end] + dr)
+    Δt = t / steps
+    rates = [r]
+    x = log(r)
+    for _ in 1:steps
+        x += k * (log(θ) - x) * Δt + σ * √Δt * randn()
+        append!(rates, exp(x))
     end
     return rates
 end

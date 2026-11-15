@@ -28,10 +28,7 @@ end
 """
 Characteristic function Heston model for an European call option from [A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options, L. Heston](https://www.jstor.org/stable/2962057)
 """
-function φ(O::EuropeanOption, m::HestonModel, ω::Number)
-    (; v, v̄, κ, ρ) = m
-    s, r, q, σ, t = O.s, O.r, O.q, O.σ, O.t
-
+function φ((; s, r, q, σ, t)::EuropeanOption, (; v, v̄, κ, ρ)::HestonModel, ω::Number)
     α = -ω^2 / 2 - im * ω / 2
     β = κ - ρ * σ * im * ω
     γ = σ^2 / 2
@@ -47,18 +44,16 @@ end
 
 function price(::AnalyticEngine, option::EuropeanOption, model::HestonModel,
                ::EquityMarketData; N=100)
-    O = option
-    m = model
-    k, t, s, q, r, σ = O.k, O.t, O.s, O.q, O.r, O.σ
-    κ, v̄ = m.κ, m.v̄
+    (; s, k, r, q, σ, t) = option
+    (; κ, v̄) = model
 
     2 * κ * v̄ ≥ σ^2 ||
         throw(ArgumentError("The Feller condition is not satisfied: 2κθ ≥ σ^2"))
 
-    integrand1(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(O, m, ω - im) /
-                                     (im * ω * φ(O, m, -im)))
+    integrand1(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(option, model, ω - im) /
+                                     (im * ω * φ(option, model, -im)))
 
-    integrand2(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(O, m, ω) /
+    integrand2(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(option, model, ω) /
                                      (im * ω))
 
     π1, _ = quadgk(integrand1, 0, N)
@@ -68,9 +63,9 @@ function price(::AnalyticEngine, option::EuropeanOption, model::HestonModel,
     π2 = π2 / π + 0.5
 
     C = s * exp(-q * t) * π1 - k * exp(-r * t) * π2
-    if iscall(O)
+    if iscall(option)
         C
-    elseif isput(O)
+    elseif isput(option)
         P = C + k * exp(-r * t) - s * exp(-q * t)
     end
 end

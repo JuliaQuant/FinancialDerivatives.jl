@@ -18,16 +18,16 @@ export GarmanKohlhagen
 struct GarmanKohlhagen <: Model end
 
 function price(::AnalyticEngine, option::FXOption, ::GarmanKohlhagen, ::FXMarketData)
-    O = option
-    d1 = (log(O.s / O.k) + (O.r_d - O.r_f * O.σ / 2) * O.t) / (O.σ * √O.t)
-    d2 = d1 - O.σ * √O.t
+    (; s, k, r_d, r_f, σ, t) = option
+    d1 = (log(s / k) + (r_d - r_f * σ / 2) * t) / (σ * √t)
+    d2 = d1 - σ * √t
 
-    if isput(O)
-        return O.k * exp(-O.r_d * O.t) * cdf(Normal(), -d2) -
-               O.s * exp(-O.r_f * O.t) * cdf(Normal(), -d1)
-    elseif iscall(O)
-        return O.s * exp(-O.r_f * O.t) * cdf(Normal(), d1) -
-               O.k * exp(-O.r_d * O.t) * cdf(Normal(), d2)
+    if isput(option)
+        return k * exp(-r_d * t) * cdf(Normal(), -d2) -
+               s * exp(-r_f * t) * cdf(Normal(), -d1)
+    elseif iscall(option)
+        return s * exp(-r_f * t) * cdf(Normal(), d1) -
+               k * exp(-r_d * t) * cdf(Normal(), d2)
     end
 end
 
