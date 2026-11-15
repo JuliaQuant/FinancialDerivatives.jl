@@ -17,37 +17,35 @@ export LongstaffSchwartz
 """
 struct LongstaffSchwartz <: Model end
 
-function price(engine::MonteCarloEngine, option::AmericanOption, ::LongstaffSchwartz,
-               ::EquityMarketData)
-    O = option
-    N = engine.num_steps
-    P = engine.num_paths
-    Δt = O.t / N
-    R = exp(O.r * Δt)
-    T = typeof(O.s * exp(-O.σ^2 * Δt / 2 + O.σ * √Δt * 0.1) / R)
-    X = Array{T}(undef, N + 1, P)
+function price((; num_steps, num_paths)::MonteCarloEngine, option::AmericanOption,
+               ::LongstaffSchwartz, ::EquityMarketData)
+    (; s, k, r, σ, t) = option
+    Δt = t / num_steps
+    R = exp(r * Δt)
+    T = typeof(s * exp(-σ^2 * Δt / 2 + σ * √Δt * 0.1) / R)
+    X = Array{T}(undef, num_steps + 1, num_paths)
 
-    for p in 1:P
-        X[1, p] = x = O.s
-        for n in 1:N
-            x *= R * exp(-O.σ^2 * Δt / 2 + O.σ * √Δt * randn())
+    for p in 1:num_paths
+        X[1, p] = x = s
+        for n in 1:num_steps
+            x *= R * exp(-σ^2 * Δt / 2 + σ * √Δt * randn())
             X[n + 1, p] = x
         end
     end
 
-    if isput(O)
-        V = [max(O.k - x, 0) / R for x in X[N + 1, :]]
-    elseif iscall(O)
-        V = [max(x - O.k, 0) / R for x in X[N + 1, :]]
+    if isput(option)
+        V = [max(k - x, 0) / R for x in X[num_steps + 1, :]]
+    elseif iscall(option)
+        V = [max(x - k, 0) / R for x in X[num_steps + 1, :]]
     end
 
-    for n in (N - 1):-1:1
+    for n in (num_steps - 1):-1:1
         I = V .!= 0
         A = [x^d for d in 0:3, x in X[n + 1, :]]
         β = A[:, I]' \ V[I]
         cV = A' * β
-        for p in 1:P
-            ev = max(O.k - X[n + 1, p], 0)
+        for p in 1:num_paths
+            ev = max(k - X[n + 1, p], 0)
             if I[p] && cV[p] < ev
                 V[p] = ev / R
             else
@@ -56,10 +54,10 @@ function price(engine::MonteCarloEngine, option::AmericanOption, ::LongstaffSchw
         end
     end
 
-    if isput(O)
-        return max(mean(V), O.k - O.s)
-    elseif iscall(O)
-        return max(mean(V), O.s - O.k)
+    if isput(option)
+        return max(mean(V), k - s)
+    elseif iscall(option)
+        return max(mean(V), s - k)
     end
 end
 

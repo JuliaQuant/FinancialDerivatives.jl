@@ -21,29 +21,29 @@ function h(z::T, n::Int64) where {T<:Number}
            sign(z) * 0.5 * sqrt(1 - exp(-((z / (n + 1.0 / 3.0))^2.0) * (n + 1.0 / 6.0)))
 end
 
-function price(engine::BinomialEngine, option::Option, ::LeisenReimer, ::EquityMarketData)
-    O = option
-    N = engine.steps
-    Δt = 0.01 # O.t / N
-    R = exp(O.r * Δt)
-    d1 = (log(O.s / O.k) + (O.r + O.σ^2 / 2) * O.t) / (O.σ * √O.t)
-    d2 = d1 - O.σ * √O.t
-    p = h(d2, N)
+function price((; steps)::BinomialEngine, option::Option, ::LeisenReimer,
+               ::EquityMarketData)
+    (; s, k, r, σ, t) = option
+    Δt = 0.01 # t / steps
+    R = exp(r * Δt)
+    d1 = (log(s / k) + (r + σ^2 / 2) * t) / (σ * √t)
+    d2 = d1 - σ * √t
+    p = h(d2, steps)
     q = 1 - p
 
-    if isput(O)
-        Z = [max(0, O.k - O.s * exp((2 * i - N) * O.σ * √Δt)) for i in 0:N]
-    elseif iscall(O)
-        Z = [max(0, O.s * exp((2 * i - N) * O.σ * √Δt) - O.k) for i in 0:N]
+    if isput(option)
+        Z = [max(0, k - s * exp((2 * i - steps) * σ * √Δt)) for i in 0:steps]
+    elseif iscall(option)
+        Z = [max(0, s * exp((2 * i - steps) * σ * √Δt) - k) for i in 0:steps]
     end
 
-    for n in (N - 1):-1:0, i in 0:n
-        if isput(O)
-            x = O.k - O.s * exp((2 * i - n) * O.σ * √Δt)
-        elseif iscall(O)
-            x = O.s * exp((2 * i - n) * O.σ * √Δt) - O.k
+    for n in (steps - 1):-1:0, i in 0:n
+        if isput(option)
+            x = k - s * exp((2 * i - n) * σ * √Δt)
+        elseif iscall(option)
+            x = s * exp((2 * i - n) * σ * √Δt) - k
         end
-        y = (q * Z[i + 1] + p * Z[i + 2]) / exp(O.r * Δt)
+        y = (q * Z[i + 1] + p * Z[i + 2]) / exp(r * Δt)
         Z[i + 1] = max(x, y)
     end
 
