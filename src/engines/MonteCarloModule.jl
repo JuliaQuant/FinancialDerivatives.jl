@@ -1,0 +1,86 @@
+module MonteCarloModule
+
+using Random: AbstractRNG
+using Statistics: mean
+using ..Engines
+using ..Instruments
+using ..MarketData
+using ..Models: Model, initial_state, evolve
+import ..Engines: price, simulate
+
+# The shocks come from this one function, so that a package extension can add a
+# quasi-random source.
+standard_normals(rng::AbstractRNG, dims...) = randn(rng, dims...)
+
+function simulate((; num_paths, num_steps, rng)::MonteCarloEngine, model::Model,
+                  md::AbstractMarketData, t)
+    Δt = t / num_steps
+    shocks = standard_normals(rng, num_steps, num_paths)
+    x0 = initial_state(model, md)
+
+    # The element type must hold the type of each input, for example a dual number.
+    T = typeof(evolve(model, md, zero(Δt), x0, Δt, zero(eltype(shocks))))
+    paths = Matrix{T}(undef, num_steps + 1, num_paths)
+    for p in 1:num_paths
+        paths[1, p] = x0
+        for n in 1:num_steps
+            paths[n + 1, p] = evolve(model, md, (n - 1) * Δt, paths[n, p], Δt, shocks[n, p])
+        end
+    end
+
+    return paths
+end
+
+"""
+Price an option under `model` as the mean of the discounted payoffs of the simulated paths.
+
+The holder can exercise the option only at the expiry.
+"""
+function price(engine::MonteCarloEngine, option::Option, model::Model,
+               md::AbstractMarketData)
+    (; t) = option
+    discount = exp(-discount_rate(md, t) * t)
+    paths = simulate(engine, model, md, t)
+
+    return discount * mean(x -> payoff(option, x), @view paths[end, :])
+end
+
+"""
+Price an [`AmericanOption`](@ref) under `model` with the least-squares Monte Carlo method.
+
+At each time step, a regression on the paths that are in the money estimates the
+continuation value. If the exercise value of a path is more than that estimate, the holder
+exercises the option on that path.
+
+# References
+- Longstaff, F. A., and Schwartz, E. S. (2001). Valuing American options by simulation: a
+  simple least-squares approach. *The Review of Financial Studies*, 14(1), 113-147.
+  [doi:10.1093/rfs/14.1.113](https://doi.org/10.1093/rfs/14.1.113)
+"""
+function price(engine::MonteCarloEngine, option::AmericanOption, model::Model,
+               md::AbstractMarketData)
+    (; k, t) = option
+    (; num_steps) = engine
+    discount = exp(-discount_rate(md, t) * t / num_steps)
+    paths = simulate(engine, model, md, t)
+
+    # Cash flow of each path, discounted to the current time step.
+    cash = [one(discount) * payoff(option, x) for x in @view paths[end, :]]
+    for n in num_steps:-1:2
+        cash .*= discount
+        exercise = [payoff(option, x) for x in @view paths[n, :]]
+        in_the_money = findall(>(0), exercise)
+        isempty(in_the_money) && continue
+
+        # A cubic polynomial in the moneyness estimates the continuation value.
+        basis = [(paths[n, p] / k)^j for p in in_the_money, j in 0:3]
+        continuation = basis * (basis \ cash[in_the_money])
+        for (i, p) in enumerate(in_the_money)
+            exercise[p] > continuation[i] && (cash[p] = exercise[p])
+        end
+    end
+
+    return max(discount * mean(cash), payoff(option, paths[1, 1]))
+end
+
+end # module MonteCarloModule

@@ -8,7 +8,7 @@ AmericanOption
 AsianOption
 EuropeanOption
 FXOption
-InterestRateDerivative
+payoff
 ```
 
 ## Market Data
@@ -18,6 +18,17 @@ FinancialDerivatives.MarketData.AbstractMarketData
 EquityMarketData
 FXMarketData
 InterestRateMarketData
+```
+
+### Accessors
+
+```@docs
+spot
+discount_rate
+foreign_rate
+dividend_yield
+volatility
+short_rate
 ```
 
 ## Pricing Engines
@@ -30,29 +41,47 @@ MonteCarloEngine
 FiniteDifferenceEngine
 ```
 
+### Binomial schemes
+
+```@docs
+BinomialScheme
+CoxRossRubinstein
+JarrowRudd
+LeisenReimer
+RendlemanBartterTree
+Tian
+FinancialDerivatives.Engines.tree_parameters
+```
+
 ## Models
 
 ```@docs
 FinancialDerivatives.Models.Model
+FinancialDerivatives.Models.LognormalModel
+FinancialDerivatives.Models.ShortRateModel
 BlackKarasinski
 BlackScholes
 BrennanSchwartz
 CoxIngersollRoss
-CoxRossRubinstein
 GarmanKohlhagen
 HestonModel
-JarrowRudd
-LeisenReimer
-LongstaffSchwartz
 RendlemanBartter
-Tian
 Vasicek
 ```
 
-## Pricing
+### Model interface
+
+```@docs
+drift
+diffusion
+FinancialDerivatives.Models.growth_rate
+```
+
+## Pricing and simulation
 
 ```@docs
 price
+simulate
 ```
 
 ## Private

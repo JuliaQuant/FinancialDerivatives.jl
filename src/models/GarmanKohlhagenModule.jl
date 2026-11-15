@@ -5,7 +5,7 @@ using Distributions: cdf, Normal
 using ...Engines
 using ...Instruments
 using ...MarketData
-import ..Model
+import ..LognormalModel, ..growth_rate
 @reexport import ...Engines: price
 
 export GarmanKohlhagen
@@ -15,11 +15,18 @@ export GarmanKohlhagen
 
 [Garman–Kohlhagen model](https://en.wikipedia.org/wiki/Foreign_exchange_option#Valuation:_the_Garman%E2%80%93Kohlhagen_model).
 """
-struct GarmanKohlhagen <: Model end
+struct GarmanKohlhagen <: LognormalModel end
 
-function price(::AnalyticEngine, option::FXOption, ::GarmanKohlhagen, ::FXMarketData)
-    (; s, k, r_d, r_f, σ, t) = option
-    d1 = (log(s / k) + (r_d - r_f * σ / 2) * t) / (σ * √t)
+growth_rate(::GarmanKohlhagen, md, t) = discount_rate(md, t) - foreign_rate(md, t)
+
+function price(::AnalyticEngine, option::FXOption, ::GarmanKohlhagen,
+               md::AbstractMarketData)
+    (; k, t) = option
+    s = spot(md)
+    r_d = discount_rate(md, t)
+    r_f = foreign_rate(md, t)
+    σ = volatility(md, t)
+    d1 = (log(s / k) + (r_d - r_f + σ^2 / 2) * t) / (σ * √t)
     d2 = d1 - σ * √t
 
     if isput(option)

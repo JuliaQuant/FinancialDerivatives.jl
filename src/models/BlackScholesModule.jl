@@ -5,7 +5,7 @@ using Distributions: cdf, Normal
 using ...Engines
 using ...Instruments
 using ...MarketData
-import ..Model
+import ..LognormalModel, ..growth_rate
 @reexport import ...Engines: price
 
 export BlackScholes
@@ -15,19 +15,21 @@ export BlackScholes
 
 [Black-Scholes model](https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model).
 """
-struct BlackScholes <: Model end
+struct BlackScholes <: LognormalModel end
+
+growth_rate(::BlackScholes, md, t) = discount_rate(md, t) - dividend_yield(md)
 
 """
 Price a [`EuropeanOption`](@ref) under the [`BlackScholes`](@ref) model using the
 closed-form Black-Scholes-Merton formula.
 """
 function price(::AnalyticEngine, option::EuropeanOption, ::BlackScholes,
-               md::EquityMarketData)
+               md::AbstractMarketData)
     (; k, t) = option
-    S = md.spot_price
-    r = md.risk_free_rate
-    q = md.dividend_yield
-    σ = md.volatility
+    S = spot(md)
+    r = discount_rate(md, t)
+    q = dividend_yield(md)
+    σ = volatility(md, t)
 
     d1 = (log(S / k) + (r - q + σ^2 / 2) * t) / (σ * √t)
     d2 = d1 - σ * √t

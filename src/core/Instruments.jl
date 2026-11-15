@@ -4,8 +4,8 @@ using Dates
 
 export FinancialInstrument
 export Derivative, Forward, Future, Option, Swap, Swaption
-export EuropeanOption, AmericanOption, AsianOption, FXOption, InterestRateDerivative
-export iscall, isput
+export EuropeanOption, AmericanOption, AsianOption, FXOption
+export iscall, isput, payoff
 
 "Abstract supertype for all financial instruments. Subtypes define contract terms only (strike, expiry, call/put). Market observables belong in an [`AbstractMarketData`](@ref FinancialDerivatives.MarketData.AbstractMarketData) subtype."
 abstract type FinancialInstrument end
@@ -55,150 +55,104 @@ function time_to_expiration(t0::Date, t1::Date)
 end
 
 """
-    InterestRateDerivative(k, r, σ, θ, t)
-
-[Interest rate derivative](https://en.wikipedia.org/wiki/Interest_rate_derivative).
-
-# Arguments
-- `k`: speed of reversion
-- `r`: initial interest rate
-- `σ`: instantaneous volatility
-- `θ`: long term mean level
-- `t`: time interval
-"""
-struct InterestRateDerivative{KT<:Real,RT<:Real,σT<:Real,θT<:Real,TT<:Real} <:
-       FinancialInstrument
-    k::KT
-    r::RT
-    σ::σT
-    θ::θT
-    t::TT
-end
-
-"Construct `InterestRateDerivative` with parameters and start `t0` and final `t1` `Date`s."
-function InterestRateDerivative(; k::Real, r::Real, σ::Real, θ::Real, t0::Date, t1::Date)
-    t = time_to_expiration(t0, t1)
-    return InterestRateDerivative(k, r, σ, θ, t)
-end
-
-"""
-    AmericanOption(s, k, r, σ, t, call)
+    AmericanOption(k, t, call)
 
 [American option](https://en.wikipedia.org/wiki/Option_style#American_and_European_options).
 
 # Arguments
-- `s`: underlying price
 - `k`: strike price
-- `r`: risk-free interest rate
-- `σ`: volatility
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct AmericanOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
-    s::ST
+struct AmericanOption{KT<:Real,TT<:Real} <: Option
     k::KT
-    r::RT
-    σ::σT
     t::TT
     call::Bool
 end
 
 "Construct [`AmericanOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
-function AmericanOption(; s::Real, k::Real, r::Real, σ::Real, t0::Date, t1::Date,
-                        call::Bool)
+function AmericanOption(; k::Real, t0::Date, t1::Date, call::Bool)
     t = time_to_expiration(t0, t1)
-    return AmericanOption(s, k, r, σ, t, call)
+    return AmericanOption(k, t, call)
 end
 
 """
-    AsianOption(s, k, r, σ, t, call)
+    AsianOption(k, t, call)
 
 [Asian option](https://en.wikipedia.org/wiki/Option_style#Asian_option).
 
 # Arguments
-- `s`: underlying price
 - `k`: strike price
-- `r`: risk-free interest rate
-- `σ`: volatility
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct AsianOption{ST<:Real,KT<:Real,RT<:Real,σT<:Real,TT<:Real} <: Option
-    s::ST
+struct AsianOption{KT<:Real,TT<:Real} <: Option
     k::KT
-    r::RT
-    σ::σT
     t::TT
     call::Bool
 end
 
 "Construct [`AsianOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
-function AsianOption(; s::Real, k::Real, r::Real, σ::Real, t0::Date, t1::Date, call::Bool)
+function AsianOption(; k::Real, t0::Date, t1::Date, call::Bool)
     t = time_to_expiration(t0, t1)
-    return AsianOption(s, k, r, σ, t, call)
+    return AsianOption(k, t, call)
 end
 
 """
-    EuropeanOption(s, k, r, σ, t, call)
+    EuropeanOption(k, t, call)
 
 [European option](https://en.wikipedia.org/wiki/Option_style#American_and_European_options).
 
 # Arguments
-- `s`: underlying price
 - `k`: strike price
-- `r`: risk-free interest rate
-- `q`: dividend yield
-- `σ`: volatility
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct EuropeanOption{ST<:Real,KT<:Real,RT<:Real,QT<:Real,σT<:Real,TT<:Real} <:
-       Option
-    s::ST
+struct EuropeanOption{KT<:Real,TT<:Real} <: Option
     k::KT
-    r::RT
-    q::QT
-    σ::σT
     t::TT
     call::Bool
 end
 
 "Construct [`EuropeanOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
-function EuropeanOption(; s::Real, k::Real, r::Real, q::Real, σ::Real, t0::Date, t1::Date,
-                        call::Bool)
+function EuropeanOption(; k::Real, t0::Date, t1::Date, call::Bool)
     t = time_to_expiration(t0, t1)
-    return EuropeanOption(s, k, r, q, σ, t, call)
+    return EuropeanOption(k, t, call)
 end
 
 """
-    FXOption(s, k, r_d, r_f, σ, t, call)
+    FXOption(k, t, call)
 
 [Foreign exchange option](https://en.wikipedia.org/wiki/Foreign_exchange_option).
 
 # Arguments
-- `s`: underlying price
 - `k`: strike price
-- `r_d`: domestic risk-free interest rate
-- `r_f`: foreign risk-free interest rate
-- `σ`: volatility
 - `t`: time to expiration
 - `call`: `true` if call, `false` if put
 """
-struct FXOption{ST<:Real,KT<:Real,RDT<:Real,RFT<:Real,σT<:Real,TT<:Real} <: Option
-    s::ST
+struct FXOption{KT<:Real,TT<:Real} <: Option
     k::KT
-    r_d::RDT
-    r_f::RFT
-    σ::σT
     t::TT
     call::Bool
 end
 
 "Construct [`FXOption`](@ref) with issue `t0` and expiry `t1` `Date`s."
-function FXOption(; s::Real, k::Real, r_d::Real, r_f::Real, σ::Real, t0::Date, t1::Date,
-                  call::Bool)
+function FXOption(; k::Real, t0::Date, t1::Date, call::Bool)
     t = time_to_expiration(t0, t1)
-    return FXOption(s, k, r_d, r_f, σ, t, call)
+    return FXOption(k, t, call)
 end
+
+"""
+    payoff(option, s)
+
+Return the amount that `option` pays at exercise for the price `s` of the underlying.
+"""
+function payoff(option::Union{EuropeanOption,AmericanOption,FXOption}, s)
+    (; k) = option
+    return iscall(option) ? max(s - k, 0) : max(k - s, 0)
+end
+
+"Return `true` if the holder can exercise the `Option` `o` before the expiry"
+isamerican(o::Option) = o isa AmericanOption
 
 end # module
