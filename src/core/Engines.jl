@@ -5,8 +5,13 @@ export AnalyticEngine, BinomialEngine, MonteCarloEngine, FiniteDifferenceEngine
 export price
 
 """
-Abstract supertype for numerical pricing methods (analytic, binomial tree, Monte Carlo, FD).
-Subtypes should implement:
+Abstract supertype for the numerical pricing methods: analytic, binomial tree, Monte Carlo, and finite difference.
+
+Each subtype is a strategy of the Strategy pattern. A subtype holds the settings of its
+numerical method, for example the number of tree steps.
+
+To add an engine, define a subtype and the [`price`](@ref) methods that take the subtype
+as the first argument.
 """
 abstract type PricingEngine end
 
@@ -33,7 +38,14 @@ struct FiniteDifferenceEngine <: PricingEngine end
 """
     price(engine, instrument, model, market_data) -> Real
 
-Compute the fair value of `instrument` under `model` using `engine` and `market_data`.
+Compute the fair value of `instrument` under `model` with `engine` and `market_data`.
+
+This declaration has no methods. It is the abstract interface of the package (dependency
+inversion). The model modules depend on this declaration and add the methods.
+
+Multiple dispatch selects the method from the types of the four arguments.
+Each supported combination of types has one method.
+If a combination has no method, `price` throws a `MethodError`.
 """
 function price end
 

@@ -5,7 +5,14 @@ using Reexport
 "Abstract supertype for stochastic process models. Subtypes hold model-specific calibrated parameters."
 abstract type PricingModel end
 
-"Base abstract type for all pricing models in this package."
+"""
+Abstract supertype for all the pricing models in this package.
+
+Each subtype is a strategy of the Strategy pattern. The type of the model selects the
+[`price`](@ref) method.
+
+To add a model, define a subtype and a [`price`](@ref) method for that subtype.
+"""
 abstract type Model <: PricingModel end
 
 include("BlackKarasinskiModule.jl")
