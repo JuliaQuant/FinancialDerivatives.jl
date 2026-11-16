@@ -3,7 +3,20 @@
 
 julia&gt; md = EquityMarketData(spot_price=100.0, risk_free_rate=0.05, dividend_yield=0.0, volatility=0.3)
 
-julia&gt; opt = EuropeanOption(100.0, 90.0, 0.05, 0.0, 0.3, 180/365, false)
+julia&gt; opt = EuropeanOption(90.0, 180/365, false)
 
 julia&gt; price(AnalyticEngine(), opt, BlackScholes(), md)
-3.2281936525908073</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« FinancialDerivatives Overview</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Sunday 15 November 2026 20:53">Sunday 15 November 2026</span>. Using Julia version 1.13.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+3.228193652590808</code></pre><p><code>price</code> reads the spot price, the rates, and the volatility from the market data. The instrument holds only the terms of the contract: the strike, the expiry, and the type of the option.</p><p>The engine selects the numerical method. The model stays the same:</p><pre><code class="language-julia hljs">julia&gt; price(BinomialEngine(), opt, BlackScholes(), md)
+3.227574163612332
+
+julia&gt; american = AmericanOption(90.0, 180/365, false)
+
+julia&gt; price(BinomialEngine(; scheme=JarrowRudd()), american, BlackScholes(), md)
+3.3074954524117497</code></pre><p>A model holds its parameters. To get the paths of a model, call <code>simulate</code>. Each column of the result is one path:</p><pre><code class="language-julia hljs">julia&gt; model = Vasicek(; k=1.0, θ=0.05, σ=0.02)
+
+julia&gt; rates = InterestRateMarketData(; short_rate=0.03)
+
+julia&gt; paths = simulate(MonteCarloEngine(; num_paths=1_000, num_steps=250), model, rates, 1.0)
+
+julia&gt; size(paths)
+(251, 1000)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« FinancialDerivatives Overview</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Monday 16 November 2026 02:11">Monday 16 November 2026</span>. Using Julia version 1.13.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
