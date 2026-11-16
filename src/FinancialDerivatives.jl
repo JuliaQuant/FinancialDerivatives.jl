@@ -39,7 +39,7 @@ The package is based on the following software design patterns:
     [`simulate`](@ref) is also generic: a short-rate model supplies [`drift`](@ref) and [`diffusion`](@ref).
     Unlike the classic Template method, the types supply the steps through multiple dispatch, not through inheritance.
 - **Facade**: one module gives the caller a single point of access to many submodules.  After `using FinancialDerivatives`,  
-    the caller does not need the names of the submodules. The package does not export those names.
+    the caller does not need the names of the submodules.
 
 The package also applies the dependency inversion principle to the market data, the models, and the schemes.
 The engines read them only through functions, and do not read their fields.
@@ -63,17 +63,13 @@ price(MonteCarloEngine(), option, BlackScholes(), md)
 """
 module FinancialDerivatives
 
+using Reexport
+
 include("sources.jl")
 
-using .Engines
-using .MarketData
-using .Instruments
-using .Models
-
-# The package does not export the names of the submodules. For example, `MarketData` is
-# also the name of a registered package.
-for submodule in (Engines, MarketData, Instruments, Models), name in names(submodule)
-    getfield(submodule, name) isa Module || @eval export $name
-end
+@reexport using .Engines
+@reexport using .MarketData
+@reexport using .Instruments
+@reexport using .Models
 
 end # module

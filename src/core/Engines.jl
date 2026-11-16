@@ -78,7 +78,9 @@ recombine.
 - `scheme`: the [`BinomialScheme`](@ref) of the tree.
 - `m`: the growth factor of the underlying on the step, in the risk-neutral measure.
 - `w`: the variance of the logarithm of the underlying on the step.
-- `x`: the logarithm of the ratio of the forward price at the expiry to the strike.
+- `x`: the logarithm of the ratio of the forward value of the underlying at the last step
+  to a reference level. A scheme can put the centre of the tree at this level. For an
+  option, the engine uses the strike as the reference level.
 - `steps`: the number of time steps in the tree.
 """
 function tree_parameters end
