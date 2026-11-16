@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="referrer" content="no-referrer"/><title>FinancialDerivatives Overview · FinancialDerivatives.jl</title><meta name="title" content="FinancialDerivatives Overview · FinancialDerivatives.jl"/><meta property="og:title" content="FinancialDerivatives Overview · FinancialDerivatives.jl"/><meta property="twitter:title" content="FinancialDerivatives Overview · FinancialDerivatives.jl"/><meta name="description" content="Documentation for FinancialDerivatives.jl."/><meta property="og:description" content="Documentation for FinancialDerivatives.jl."/><meta property="twitter:description" content="Documentation for FinancialDerivatives.jl."/><meta property="og:url" content="https://JuliaQuant.github.io/FinancialDerivatives.jl/"/><meta property="twitter:url" content="https://JuliaQuant.github.io/FinancialDerivatives.jl/"/><link rel="canonical" href="https://JuliaQuant.github.io/FinancialDerivatives.jl/"/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.63.2/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>FinancialDerivatives.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>FinancialDerivatives Overview</a><ul class="internal"><li><a class="tocitem" href="#Architecture"><span>Architecture</span></a></li><li><a class="tocitem" href="#Contents"><span>Contents</span></a></li></ul></li><li><a class="tocitem" href="getting_started/">Getting Started</a></li><li><a class="tocitem" href="api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>FinancialDerivatives Overview</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>FinancialDerivatives Overview</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaQuant/FinancialDerivatives.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaQuant/FinancialDerivatives.jl/blob/main/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="FinancialDerivatives-Overview"><a class="docs-heading-anchor" href="#FinancialDerivatives-Overview">FinancialDerivatives Overview</a><a id="FinancialDerivatives-Overview-1"></a><a class="docs-heading-anchor-permalink" href="#FinancialDerivatives-Overview" title="Permalink"></a></h1><article><details class="docstring" open="true"><summary id="FinancialDerivatives"><a class="docstring-binding" href="#FinancialDerivatives"><code>FinancialDerivatives</code></a> — <span class="docstring-category">Module</span></summary><section><div><p>Compute the fair value of financial derivatives.</p><p>The package has the following object: </p><ul><li><a href="api/#FinancialDerivatives.Instruments.FinancialInstrument"><code>FinancialInstrument</code></a>: features that characterizes the contract, for example the strike and the expiry.</li><li><a href="api/#FinancialDerivatives.MarketData.AbstractMarketData"><code>AbstractMarketData</code></a>: the market observables, for example the spot price and the volatility. </li><li><a href="api/#FinancialDerivatives.Models.Model"><code>Models.Model</code></a>: the stochastic dynamics mathematical modelling of the underlying, and the parameters of the dynamics.</li><li><a href="api/#FinancialDerivatives.Engines.PricingEngine"><code>PricingEngine</code></a>: the numerical method and its settings, for example the number of tree steps.</li></ul><p><a href="api/#FinancialDerivatives.Engines.price"><code>price</code></a> is the only pricing function:</p><pre><code class="language-julia hljs">price(engine, instrument, model, market_data)</code></pre><p>Multiple dispatch selects the method from the types of the four arguments. The closed-form formula, the binomial tree and the Monte Carlo simulation of the lognormal models are generic methods. A generic method accepts each model that implements the functions that the method calls. A closed-form formula of one model, for example the Heston model, has one method for its combination of types.</p><p><a href="api/#FinancialDerivatives.Engines.simulate"><code>simulate</code></a> returns the simulated paths of a model:</p><pre><code class="language-julia hljs">simulate(engine, model, market_data, t)</code></pre><p><strong>Design patterns</strong></p><p>The package is based on the following software design patterns:</p><ul><li><strong>Strategy</strong>: each algorithm has its own type, and one common function runs all the algorithms.   Here, the engine and the model define the computational strategies, and <code>price</code> is the common function.   The caller passes them to <code>price</code> to select the algorithm. The engine also holds the  simulation    settings of its algorithm, for example <code>steps</code> or <code>num_paths</code>. The <a href="api/#FinancialDerivatives.Engines.BinomialScheme"><code>BinomialScheme</code></a> is a strategy   of the binomial engine: the scheme selects the moves of the tree.</li><li><strong>Bridge</strong>: the description of an object and the computation on the object are in two independent type hierarchies.   Each hierarchy can change without a change to the other one. Here, the instrument types are the description, and the    engine types are the computation. Unlike the classic Bridge, the instrument does not hold a reference to the engine.</li><li><strong>Template method</strong>: one generic method holds the steps of an algorithm, and each type supplies only the steps that are different.   Here, the closed-form method, the tree method and the Monte Carlo method of the lognormal models are generic.   The instrument supplies <a href="api/#FinancialDerivatives.Instruments.payoff"><code>payoff</code></a>, the model supplies <a href="api/#FinancialDerivatives.Models.growth_rate"><code>growth_rate</code></a>, and the scheme supplies the moves of the tree.   <a href="api/#FinancialDerivatives.Engines.simulate"><code>simulate</code></a> is also generic: a short-rate model supplies <a href="api/#FinancialDerivatives.Models.drift"><code>drift</code></a> and <a href="api/#FinancialDerivatives.Models.diffusion"><code>diffusion</code></a>.   Unlike the classic Template method, the types supply the steps through multiple dispatch, not through inheritance.</li><li><strong>Facade</strong>: one module gives the caller a single point of access to many submodules.  After <code>using FinancialDerivatives</code>,     the caller does not need the names of the submodules.</li></ul><p>The package also applies the dependency inversion principle to the market data, the models, and the schemes. The engines read them only through functions, and do not read their fields. For example, the engines read the market data through the accessors, such as <a href="api/#FinancialDerivatives.MarketData.spot"><code>spot</code></a> and <a href="api/#FinancialDerivatives.MarketData.discount_rate"><code>discount_rate</code></a>. If a new type implements those functions, the engines accept the new type. The instruments are different: the engines read the fields <code>k</code> and <code>t</code> of an option. A new option type must have those fields, and must have <a href="api/#FinancialDerivatives.Instruments.payoff"><code>payoff</code></a> and <a href="api/#FinancialDerivatives.Instruments.isamerican"><code>isamerican</code></a> methods.</p><p><strong>Examples</strong></p><p>These calls compute the value of the same option with three different algorithms.</p><pre><code class="language-julia hljs">option = AmericanOption(90.0, 0.5, false)
+md = EquityMarketData(; spot_price=100.0, risk_free_rate=0.05, dividend_yield=0.0, volatility=0.3)
+
+price(BinomialEngine(; scheme=CoxRossRubinstein()), option, BlackScholes(), md)
+price(BinomialEngine(; scheme=JarrowRudd()), option, BlackScholes(), md)
+price(MonteCarloEngine(), option, BlackScholes(), md)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaQuant/FinancialDerivatives.jl/blob/b16b8f3874d5e18c10aeb50d108c715524e694b6/src/FinancialDerivatives.jl#L1-L63">source</a></section></details></article><h2 id="Architecture"><a class="docs-heading-anchor" href="#Architecture">Architecture</a><a id="Architecture-1"></a><a class="docs-heading-anchor-permalink" href="#Architecture" title="Permalink"></a></h2><p>The documentation build makes this diagram from the types and the methods of the package. The diagram does not show the combinations of types that <a href="api/#FinancialDerivatives.Engines.price"><code>price</code></a> accepts.</p><div class="mermaid">
+classDiagram
+    direction LR
+    namespace Engines {
+        class AnalyticEngine {
+            price()
+        }
+        class BinomialEngine {
+            steps::Int64
+            scheme::BinomialScheme
+            price()
+        }
+        class BinomialScheme {
+            &lt;&lt;abstract&gt;&gt;
+            tree_steps()
+        }
+        class CoxRossRubinstein {
+            tree_parameters()
+        }
+        class FiniteDifferenceEngine {
+        }
+        class JarrowRudd {
+            tree_parameters()
+        }
+        class LeisenReimer {
+            tree_parameters()
+            tree_steps()
+        }
+        class MonteCarloEngine {
+            num_paths::Int64
+            num_steps::Int64
+            rng
+            price()
+            simulate()
+        }
+        class PricingEngine {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class RendlemanBartterTree {
+            tree_parameters()
+        }
+        class Tian {
+            tree_parameters()
+        }
+    }
+    namespace Instruments {
+        class AmericanOption {
+            k::Real
+            t::Real
+            call::Bool
+            payoff()
+        }
+        class AsianOption {
+            k::Real
+            t::Real
+            call::Bool
+        }
+        class Derivative {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class EuropeanOption {
+            k::Real
+            t::Real
+            call::Bool
+            payoff()
+        }
+        class FXOption {
+            k::Real
+            t::Real
+            call::Bool
+            payoff()
+        }
+        class FinancialInstrument {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class Forward {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class Future {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class Option {
+            &lt;&lt;abstract&gt;&gt;
+            isamerican()
+            iscall()
+            isput()
+        }
+        class Swap {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class Swaption {
+            &lt;&lt;abstract&gt;&gt;
+        }
+    }
+    namespace MarketData {
+        class AbstractMarketData {
+            &lt;&lt;abstract&gt;&gt;
+            discount_factor()
+        }
+        class EquityMarketData {
+            spot_price::Real
+            risk_free_rate
+            dividend_yield::Real
+            volatility
+            discount_rate()
+            dividend_yield()
+            spot()
+            volatility()
+        }
+        class FXMarketData {
+            spot_price::Real
+            domestic_rate
+            foreign_rate
+            volatility
+            discount_rate()
+            foreign_rate()
+            spot()
+            volatility()
+        }
+        class InterestRateMarketData {
+            short_rate::Real
+            short_rate()
+        }
+    }
+    namespace Models {
+        class LognormalModel {
+            &lt;&lt;abstract&gt;&gt;
+            initial_state()
+            transition()
+        }
+        class Model {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class OneFactorModel {
+            &lt;&lt;abstract&gt;&gt;
+            transition()
+        }
+        class PricingModel {
+            &lt;&lt;abstract&gt;&gt;
+        }
+        class ShortRateModel {
+            &lt;&lt;abstract&gt;&gt;
+            initial_state()
+        }
+        class BlackKarasinski {
+            k::Real
+            θ::Real
+            σ::Real
+            diffusion()
+            drift()
+            transition()
+        }
+        class BlackScholes {
+            growth_rate()
+        }
+        class BrennanSchwartz {
+            k::Real
+            θ::Real
+            σ::Real
+            diffusion()
+            drift()
+        }
+        class CoxIngersollRoss {
+            k::Real
+            θ::Real
+            σ::Real
+            diffusion()
+            drift()
+        }
+        class GarmanKohlhagen {
+            growth_rate()
+        }
+        class HestonModel {
+            v::Real
+            v̄::Real
+            κ::Real
+            σ::Real
+            ρ::Real
+        }
+        class RendlemanBartter {
+            θ::Real
+            σ::Real
+            diffusion()
+            drift()
+        }
+        class Vasicek {
+            k::Real
+            θ::Real
+            σ::Real
+            diffusion()
+            drift()
+        }
+    }
+    PricingEngine &lt;|-- AnalyticEngine
+    PricingEngine &lt;|-- BinomialEngine
+    BinomialEngine *-- BinomialScheme : scheme
+    BinomialScheme &lt;|-- CoxRossRubinstein
+    PricingEngine &lt;|-- FiniteDifferenceEngine
+    BinomialScheme &lt;|-- JarrowRudd
+    BinomialScheme &lt;|-- LeisenReimer
+    PricingEngine &lt;|-- MonteCarloEngine
+    BinomialScheme &lt;|-- RendlemanBartterTree
+    BinomialScheme &lt;|-- Tian
+    Option &lt;|-- AmericanOption
+    Option &lt;|-- AsianOption
+    FinancialInstrument &lt;|-- Derivative
+    Option &lt;|-- EuropeanOption
+    Option &lt;|-- FXOption
+    Derivative &lt;|-- Forward
+    Derivative &lt;|-- Future
+    Derivative &lt;|-- Option
+    Derivative &lt;|-- Swap
+    Derivative &lt;|-- Swaption
+    AbstractMarketData &lt;|-- EquityMarketData
+    AbstractMarketData &lt;|-- FXMarketData
+    AbstractMarketData &lt;|-- InterestRateMarketData
+    OneFactorModel &lt;|-- LognormalModel
+    PricingModel &lt;|-- Model
+    Model &lt;|-- OneFactorModel
+    OneFactorModel &lt;|-- ShortRateModel
+    ShortRateModel &lt;|-- BlackKarasinski
+    LognormalModel &lt;|-- BlackScholes
+    ShortRateModel &lt;|-- BrennanSchwartz
+    ShortRateModel &lt;|-- CoxIngersollRoss
+    LognormalModel &lt;|-- GarmanKohlhagen
+    Model &lt;|-- HestonModel
+    ShortRateModel &lt;|-- RendlemanBartter
+    ShortRateModel &lt;|-- Vasicek
+</div>
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/+esm";
+mermaid.initialize({startOnLoad: true, theme: "neutral"});
+</script>
+<h2 id="Contents"><a class="docs-heading-anchor" href="#Contents">Contents</a><a id="Contents-1"></a><a class="docs-heading-anchor-permalink" href="#Contents" title="Permalink"></a></h2><ul><li><a href="getting_started/#Getting-Started">Getting Started</a></li><li class="no-marker"><ul><li><a href="getting_started/#Installation">Installation</a></li><li><a href="getting_started/#Usage">Usage</a></li></ul></li><li><a href="api/#API">API</a></li><li class="no-marker"><ul><li><a href="api/#Instruments">Instruments</a></li><li><a href="api/#Market-Data">Market Data</a></li><li><a href="api/#Pricing-Engines">Pricing Engines</a></li><li><a href="api/#Models">Models</a></li><li><a href="api/#Pricing-and-simulation">Pricing and simulation</a></li><li><a href="api/#Private">Private</a></li></ul></li></ul></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="getting_started/">Getting Started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Monday 16 November 2026 02:50">Monday 16 November 2026</span>. Using Julia version 1.13.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
