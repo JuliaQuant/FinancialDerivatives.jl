@@ -14,13 +14,15 @@ export HestonModel
 """
 [Heston model](https://en.wikipedia.org/wiki/Heston_model).
 """
-@kwdef struct HestonModel{VT<:Real,VVT<:Real,KT<:Real,RT<:Real} <: Model
+@kwdef struct HestonModel{VT<:Real,VVT<:Real,KT<:Real,σT<:Real,RT<:Real} <: Model
     "Initial stock variance"
     v::VT
     "Long term variance mean"
     v̄::VVT
     "Mean reversion term of stock variance `v`"
     κ::KT
+    "Volatility of stock variance `v`"
+    σ::σT
     "Correlation between stock price `s` and it's variance `v`"
     ρ::RT
 end
@@ -28,7 +30,10 @@ end
 """
 Characteristic function Heston model for an European call option from [A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options, L. Heston](https://www.jstor.org/stable/2962057)
 """
-function φ((; s, r, q, σ, t)::EuropeanOption, (; v, v̄, κ, ρ)::HestonModel, ω::Number)
+function φ((; t)::EuropeanOption, (; v, v̄, κ, σ, ρ)::HestonModel,
+           md::AbstractMarketData, ω::Number)
+    s, q, r = spot(md), dividend_yield(md), discount_rate(md, t)
+
     α = -ω^2 / 2 - im * ω / 2
     β = κ - ρ * σ * im * ω
     γ = σ^2 / 2
@@ -43,17 +48,18 @@ function φ((; s, r, q, σ, t)::EuropeanOption, (; v, v̄, κ, ρ)::HestonModel,
 end
 
 function price(::AnalyticEngine, option::EuropeanOption, model::HestonModel,
-               ::EquityMarketData; N=100)
-    (; s, k, r, q, σ, t) = option
-    (; κ, v̄) = model
+               md::AbstractMarketData; N=100)
+    (; k, t) = option
+    s, q, r = spot(md), dividend_yield(md), discount_rate(md, t)
+    (; σ, κ, v̄) = model
 
     2 * κ * v̄ ≥ σ^2 ||
         throw(ArgumentError("The Feller condition is not satisfied: 2κθ ≥ σ^2"))
 
-    integrand1(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(option, model, ω - im) /
-                                     (im * ω * φ(option, model, -im)))
+    integrand1(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(option, model, md, ω - im) /
+                                     (im * ω * φ(option, model, md, -im)))
 
-    integrand2(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(option, model, ω) /
+    integrand2(ω::Real)::Real = real(exp(-im * ω * log(k)) * φ(option, model, md, ω) /
                                      (im * ω))
 
     π1, _ = quadgk(integrand1, 0, N)
