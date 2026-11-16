@@ -1,5 +1,7 @@
 # FinancialDerivatives Overview
 
+![A binomial tree grows from one point, turns into random price paths, and the path ends form a bell curve](assets/hero.webp)
+
 ```@docs
 FinancialDerivatives
 ```
