@@ -1,16 +1,18 @@
 
-# FinancialDerivatives.jl
-
 <div align="center">
 
-<img src="docs/src/assets/hero.webp" alt="A binomial tree grows from one point, turns into random price paths, and the path ends form a bell curve" width="800">
+# FinancialDerivatives.jl
+
+<p>
+  <img src="docs/src/assets/hero.webp" alt="A binomial tree grows from one point, turns into random price paths, and the path ends form a bell curve" width="800">
+</p>
+
+| **Documentation** | **Status** | **License** |
+|:-----------------:|:----------:|:-----------:|
+| [![docs-dev][dev-img]][dev-url] | [![CI][ci-img]][ci-url] [![codecov][cov-img]][cov-url] | [![license][lic-img]][lic-url] |
 
 </div>
 
-
-| **Documentation** |**Status** |**License** | 
-|:-----------------:|:----------------------------:|:-----------:|
-| [![docs-dev][dev-img]][dev-url] | [![CI][ci-img]][ci-url] [![codecov][cov-img]][cov-url] |  [![license][lic-img]][lic-url] |
 
 ---
 ## 💾 [Installing](https://julialang.github.io/Pkg.jl/v1/managing-packages/)
