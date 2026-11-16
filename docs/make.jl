@@ -1,6 +1,8 @@
 using Documenter
 using FinancialDerivatives
 
+include("class_diagram.jl")
+
 DocMeta.setdocmeta!(FinancialDerivatives, :DocTestSetup, :(using FinancialDerivatives);
                     recursive=true)
 
