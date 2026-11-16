@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="docs/src/assets/logo.svg" alt="FinancialDerivatives.jl logo" width="140">
-
 # FinancialDerivatives.jl
 
 | **Documentation** |**Status** |**License** | 
