@@ -17,4 +17,4 @@ makedocs(; sitename="FinancialDerivatives.jl",
                 "getting_started.md",
                 "api.md"])
 
-deploydocs(; repo="github.com/JuliaQuant/FinancialDerivatives.jl.git", push_preview=false)
+deploydocs(; repo="github.com/JuliaQuant/FinancialDerivatives.jl.git", push_preview=true)
