@@ -11,7 +11,6 @@ makedocs(; sitename="FinancialDerivatives.jl",
          format=Documenter.HTML(;
                                 prettyurls=get(ENV, "CI", "false") == "true",
                                 canonical="https://JuliaQuant.github.io/FinancialDerivatives.jl",
-                                edit_link="main",
                                 assets=String[]),
          pages=["index.md",
                 "getting_started.md",
