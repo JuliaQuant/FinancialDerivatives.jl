@@ -5,8 +5,6 @@ import ..ShortRateModel, ..drift, ..diffusion
 export CoxIngersollRoss
 
 """
-    CoxIngersollRoss(k, θ, σ)
-
 Select the [Cox-Ingersoll-Ross model](https://en.wikipedia.org/wiki/Cox%E2%80%93Ingersoll%E2%80%93Ross_model) of the short rate.
 
 The short rate `r` follows `dr = k (θ - r) dt + σ √r dW`. The diffusion term is proportional to

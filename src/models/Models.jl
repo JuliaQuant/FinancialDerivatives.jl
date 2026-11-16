@@ -3,7 +3,8 @@ module Models
 using Reexport
 using ..MarketData
 
-export drift, diffusion
+export OneFactorModel, LognormalModel, ShortRateModel
+export drift, diffusion, growth_rate, initial_state
 
 "Abstract supertype for stochastic process models. Subtypes hold model-specific calibrated parameters."
 abstract type PricingModel end
@@ -21,24 +22,46 @@ for that subtype. To add a model to the generic engines, define a subtype of
 abstract type Model <: PricingModel end
 
 """
+Abstract supertype for the models with one state that one Brownian motion drives.
+
+[`simulate`](@ref FinancialDerivatives.Engines.simulate) accepts each subtype.
+
+To add a model, define a subtype and its [`initial_state`](@ref), [`drift`](@ref) and
+[`diffusion`](@ref) methods. `simulate` then moves the state with Euler-Maruyama steps.
+If the model has a better step, define a [`transition`](@ref) method for the subtype.
+"""
+abstract type OneFactorModel <: Model end
+
+"""
 Abstract supertype for the models in which the price of the underlying is lognormal.
 
-The [`BinomialEngine`](@ref FinancialDerivatives.Engines.BinomialEngine) and the
+The state is the price of the underlying. The
+[`AnalyticEngine`](@ref FinancialDerivatives.Engines.AnalyticEngine), the
+[`BinomialEngine`](@ref FinancialDerivatives.Engines.BinomialEngine) and the
 [`MonteCarloEngine`](@ref FinancialDerivatives.Engines.MonteCarloEngine) accept each subtype.
 
 To add a model, define a subtype and a [`growth_rate`](@ref) method for that subtype.
 """
-abstract type LognormalModel <: Model end
+abstract type LognormalModel <: OneFactorModel end
 
 """
 Abstract supertype for the models of the short rate.
 
-[`simulate`](@ref FinancialDerivatives.Engines.simulate) accepts each subtype. The market data
-supplies the initial rate.
+The state is the short rate. The market data supplies the initial rate.
 
 To add a model, define a subtype and its [`drift`](@ref) and [`diffusion`](@ref) methods.
 """
-abstract type ShortRateModel <: Model end
+abstract type ShortRateModel <: OneFactorModel end
+
+"""
+    initial_state(model, md)
+
+Return the state of `model` at the time zero.
+"""
+function initial_state end
+
+initial_state(::LognormalModel, md) = spot(md)
+initial_state(::ShortRateModel, md) = short_rate(md)
 
 """
     drift(model, md, t, x)
@@ -61,37 +84,40 @@ Return the growth rate of the underlying in the risk-neutral measure for the hor
 """
 function growth_rate end
 
-initial_state(::LognormalModel, md) = spot(md)
-initial_state(::ShortRateModel, md) = short_rate(md)
+"""
+Return the function that moves the state of `model` from the time `t1` to the time `t2`.
 
-# Return the state after the time step `Δt`, for the standard normal shock `z`.
-# This method is one Euler-Maruyama step. A model with a better step defines its own method.
-function evolve(model::Model, md, t, x, Δt, z)
-    return x + drift(model, md, t, x) * Δt + diffusion(model, md, t, x) * √Δt * z
+The result is a function `(x, z) -> y`. `x` is the state at the time `t1`, `z` is a
+standard normal shock, and `y` is the state at the time `t2`.
+
+The method for a [`OneFactorModel`](@ref) is one Euler-Maruyama step.
+The method for a [`LognormalModel`](@ref) is exact.
+"""
+function transition(model::OneFactorModel, md, t1, t2)
+    Δt = t2 - t1
+    return (x, z) -> x + drift(model, md, t1, x) * Δt +
+                     diffusion(model, md, t1, x) * √Δt * z
 end
 
-# Growth and variance of the logarithm of the underlying between the times `t1` and `t2`.
+# Growth of the logarithm of the underlying between the times `t1` and `t2`.
 # The market data gives each rate for a horizon that starts at the time zero.
 function log_growth(model, md, t1, t2)
     return growth_rate(model, md, t2) * t2 - growth_rate(model, md, t1) * t1
 end
-log_variance(md, t1, t2) = volatility(md, t2)^2 * t2 - volatility(md, t1)^2 * t1
 
-# `drift` and `diffusion` read the forward values on an interval of this length, in years.
-const INSTANT = 1e-4
-
-function drift(model::LognormalModel, md, t, x)
-    return log_growth(model, md, t, t + INSTANT) / INSTANT * x
+# Variance of the logarithm of the underlying between the times `t1` and `t2`.
+function log_variance(md, t1, t2)
+    variance = volatility(md, t2)^2 * t2 - volatility(md, t1)^2 * t1
+    variance ≥ 0 ||
+        throw(ArgumentError("The total variance of the volatility decreases between the " *
+                            "horizons $t1 and $t2 (calendar arbitrage)"))
+    return variance
 end
 
-function diffusion(::LognormalModel, md, t, x)
-    return √(log_variance(md, t, t + INSTANT) / INSTANT) * x
-end
-
-# The logarithm of the underlying is normal, thus this step is exact.
-function evolve(model::LognormalModel, md, t, x, Δt, z)
-    variance = log_variance(md, t, t + Δt)
-    return x * exp(log_growth(model, md, t, t + Δt) - variance / 2 + √variance * z)
+function transition(model::LognormalModel, md, t1, t2)
+    growth = log_growth(model, md, t1, t2)
+    variance = log_variance(md, t1, t2)
+    return (x, z) -> x * exp(growth - variance / 2 + √variance * z)
 end
 
 include("BlackKarasinskiModule.jl")

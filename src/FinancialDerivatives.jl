@@ -13,9 +13,9 @@ The package has the following object:
     price(engine, instrument, model, market_data)
 
 Multiple dispatch selects the method from the types of the four arguments.
-A closed-form formula has one method for its combination of types.
-The binomial tree and the Monte Carlo simulation have generic methods.
-A generic method accepts each model and each instrument that implement the functions that the method calls.
+The closed-form formula, the binomial tree and the Monte Carlo simulation of the lognormal models are generic methods.
+A generic method accepts each model that implements the functions that the method calls.
+A closed-form formula of one model, for example the Heston model, has one method for its combination of types.
 
 [`simulate`](@ref) returns the simulated paths of a model:
 
@@ -34,17 +34,19 @@ The package is based on the following software design patterns:
     Each hierarchy can change without a change to the other one. Here, the instrument types are the description, and the 
     engine types are the computation. Unlike the classic Bridge, the instrument does not hold a reference to the engine.
 - **Template method**: one generic method holds the steps of an algorithm, and each type supplies only the steps that are different.
-    Here, the tree method and the Monte Carlo method are generic. The instrument supplies [`payoff`](@ref),
-    the model supplies [`drift`](@ref) and [`diffusion`](@ref), and the scheme supplies the moves of the tree.
+    Here, the closed-form method, the tree method and the Monte Carlo method of the lognormal models are generic.
+    The instrument supplies [`payoff`](@ref), the model supplies [`growth_rate`](@ref), and the scheme supplies the moves of the tree.
+    [`simulate`](@ref) is also generic: a short-rate model supplies [`drift`](@ref) and [`diffusion`](@ref).
     Unlike the classic Template method, the types supply the steps through multiple dispatch, not through inheritance.
 - **Facade**: one module gives the caller a single point of access to many submodules.  After `using FinancialDerivatives`,  
     the caller does not need the names of the submodules. The package does not export those names.
 
-The package also applies the dependency inversion principle.
-The engines, the models, the instruments, and the market data depend on function declarations.
-They do not depend on each other.
-For example, the engines read the market data only through the accessors, such as [`spot`](@ref) and [`discount_rate`](@ref).
+The package also applies the dependency inversion principle to the market data, the models, and the schemes.
+The engines read them only through functions, and do not read their fields.
+For example, the engines read the market data through the accessors, such as [`spot`](@ref) and [`discount_rate`](@ref).
 If a new type implements those functions, the engines accept the new type.
+The instruments are different: the engines read the fields `k` and `t` of an option.
+A new option type must have those fields, and must have [`payoff`](@ref) and [`isamerican`](@ref) methods.
 
 # Examples
 

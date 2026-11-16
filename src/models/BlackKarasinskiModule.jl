@@ -1,12 +1,10 @@
 module BlackKarasinskiModule
 
-import ..ShortRateModel, ..drift, ..diffusion, ..evolve
+import ..ShortRateModel, ..drift, ..diffusion, ..transition
 
 export BlackKarasinski
 
 """
-    BlackKarasinski(k, θ, σ)
-
 Select the [Black-Karasinski model](https://en.wikipedia.org/wiki/Black%E2%80%93Karasinski_model) of the short rate.
 
 The logarithm of the short rate `r` follows `d ln r = k (ln θ - ln r) dt + σ dW`. The short
@@ -30,14 +28,12 @@ Base.@kwdef struct BlackKarasinski{KT<:Real,θT<:Real,σT<:Real} <: ShortRateMod
     σ::σT
 end
 
-# Ito's lemma gives the coefficients of `r` from the coefficients of `ln r`.
 drift((; k, θ, σ)::BlackKarasinski, _, _, r) = r * (k * (log(θ) - log(r)) + σ^2 / 2)
 diffusion((; σ)::BlackKarasinski, _, _, r) = σ * r
 
-# A step on `ln r` keeps the rate positive.
-function evolve((; k, θ, σ)::BlackKarasinski, _, _, r, Δt, z)
-    x = log(r)
-    return exp(x + k * (log(θ) - x) * Δt + σ * √Δt * z)
+function transition((; k, θ, σ)::BlackKarasinski, _, t1, t2)
+    Δt = t2 - t1
+    return (r, z) -> exp(log(r) + k * (log(θ) - log(r)) * Δt + σ * √Δt * z)
 end
 
 end # module BlackKarasinskiModule

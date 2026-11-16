@@ -5,7 +5,7 @@ using Dates
 export FinancialInstrument
 export Derivative, Forward, Future, Option, Swap, Swaption
 export EuropeanOption, AmericanOption, AsianOption, FXOption
-export iscall, isput, payoff
+export iscall, isput, isamerican, payoff
 
 "Abstract supertype for all financial instruments. Subtypes define contract terms only (strike, expiry, call/put). Market observables belong in an [`AbstractMarketData`](@ref FinancialDerivatives.MarketData.AbstractMarketData) subtype."
 abstract type FinancialInstrument end
@@ -46,17 +46,13 @@ Abstract type for [swaption](https://en.wikipedia.org/wiki/Swaption).
 """
 abstract type Swaption <: Derivative end
 
-"Compute the time to expiration in years between two dates."
+"Return the time between two dates in years, with the Actual/365 Fixed day count."
 function time_to_expiration(t0::Date, t1::Date)
     t1 > t0 || throw(ArgumentError("Expiry date $t1 must be greater than issue date $t0"))
-    τ = t1 - t0
-    year_days = Dates.value(lastdayofyear(t0)) - Dates.value(firstdayofyear(t0))
-    return Dates.value(τ) / year_days
+    return Dates.value(t1 - t0) / 365
 end
 
 """
-    AmericanOption(k, t, call)
-
 [American option](https://en.wikipedia.org/wiki/Option_style#American_and_European_options).
 
 # Arguments
@@ -77,8 +73,6 @@ function AmericanOption(; k::Real, t0::Date, t1::Date, call::Bool)
 end
 
 """
-    AsianOption(k, t, call)
-
 [Asian option](https://en.wikipedia.org/wiki/Option_style#Asian_option).
 
 # Arguments
@@ -99,8 +93,6 @@ function AsianOption(; k::Real, t0::Date, t1::Date, call::Bool)
 end
 
 """
-    EuropeanOption(k, t, call)
-
 [European option](https://en.wikipedia.org/wiki/Option_style#American_and_European_options).
 
 # Arguments
@@ -121,8 +113,6 @@ function EuropeanOption(; k::Real, t0::Date, t1::Date, call::Bool)
 end
 
 """
-    FXOption(k, t, call)
-
 [Foreign exchange option](https://en.wikipedia.org/wiki/Foreign_exchange_option).
 
 # Arguments
@@ -143,8 +133,6 @@ function FXOption(; k::Real, t0::Date, t1::Date, call::Bool)
 end
 
 """
-    payoff(option, s)
-
 Return the amount that `option` pays at exercise for the price `s` of the underlying.
 """
 function payoff(option::Union{EuropeanOption,AmericanOption,FXOption}, s)

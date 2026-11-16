@@ -5,8 +5,6 @@ import ..ShortRateModel, ..drift, ..diffusion
 export RendlemanBartter
 
 """
-    RendlemanBartter(θ, σ)
-
 Select the [Rendleman-Bartter model](https://en.wikipedia.org/wiki/Rendleman%E2%80%93Bartter_model) of the short rate.
 
 The short rate `r` follows `dr = θ r dt + σ r dW`. The drift term and the diffusion term

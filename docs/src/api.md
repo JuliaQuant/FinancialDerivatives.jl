@@ -9,6 +9,7 @@ AsianOption
 EuropeanOption
 FXOption
 payoff
+isamerican
 ```
 
 ## Market Data
@@ -29,6 +30,7 @@ foreign_rate
 dividend_yield
 volatility
 short_rate
+discount_factor
 ```
 
 ## Pricing Engines
@@ -51,14 +53,16 @@ LeisenReimer
 RendlemanBartterTree
 Tian
 FinancialDerivatives.Engines.tree_parameters
+FinancialDerivatives.Engines.tree_steps
 ```
 
 ## Models
 
 ```@docs
 FinancialDerivatives.Models.Model
-FinancialDerivatives.Models.LognormalModel
-FinancialDerivatives.Models.ShortRateModel
+OneFactorModel
+LognormalModel
+ShortRateModel
 BlackKarasinski
 BlackScholes
 BrennanSchwartz
@@ -72,9 +76,11 @@ Vasicek
 ### Model interface
 
 ```@docs
+initial_state
+growth_rate
 drift
 diffusion
-FinancialDerivatives.Models.growth_rate
+FinancialDerivatives.Models.transition
 ```
 
 ## Pricing and simulation

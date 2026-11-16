@@ -21,22 +21,21 @@ julia> md = EquityMarketData(spot_price=100.0, risk_free_rate=0.05, dividend_yie
 julia> opt = EuropeanOption(90.0, 180/365, false)
 
 julia> price(AnalyticEngine(), opt, BlackScholes(), md)
-3.2281936525908073
+3.228193652590808
 ```
 
-`price` reads the spot price, the rates, and the volatility from the market data.
-The instrument holds only the terms of the contract: the strike, the expiry, and the type of the option.
+`price` reads the spot price, the rates, and the volatility from the market data. The instrument holds only the terms of the contract: the strike, the expiry, and the type of the option.
 
 The engine selects the numerical method. The model stays the same:
 
 ```julia
 julia> price(BinomialEngine(), opt, BlackScholes(), md)
-3.2275741636134345
+3.227574163612332
 
 julia> american = AmericanOption(90.0, 180/365, false)
 
 julia> price(BinomialEngine(; scheme=JarrowRudd()), american, BlackScholes(), md)
-3.307495452412955
+3.3074954524117497
 ```
 
 A model holds its parameters. To get the paths of a model, call `simulate`.

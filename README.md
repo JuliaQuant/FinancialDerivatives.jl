@@ -26,7 +26,7 @@ julia> eu_md = EquityMarketData(; spot_price=100.0, risk_free_rate=0.05, dividen
 EquityMarketData{Float64, Float64, Float64, Float64}(100.0, 0.05, 0.01, 0.3)
 
 julia> price(AnalyticEngine(), eu_put, BlackScholes(), eu_md) 
-3.3455749727441635
+3.345574972744167
 ```
 
 [dev-img]: https://img.shields.io/badge/docs-stable-blue.svg

@@ -5,8 +5,6 @@ import ..ShortRateModel, ..drift, ..diffusion
 export BrennanSchwartz
 
 """
-    BrennanSchwartz(k, θ, σ)
-
 Select the one-factor Brennan-Schwartz model of the short rate.
 
 The short rate `r` follows `dr = k (θ - r) dt + σ r dW`. The diffusion term is proportional to
