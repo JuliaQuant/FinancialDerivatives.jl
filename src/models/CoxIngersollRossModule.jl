@@ -7,8 +7,13 @@ export CoxIngersollRoss
 """
 Select the [Cox-Ingersoll-Ross model](https://en.wikipedia.org/wiki/Cox%E2%80%93Ingersoll%E2%80%93Ross_model) of the short rate.
 
-The short rate `r` follows `dr = k (θ - r) dt + σ √r dW`. The diffusion term is proportional to
-`√r`. The
+The short rate ``r`` follows
+
+```math
+dr = k (θ - r)\\,dt + σ \\sqrt{r}\\,dW
+```
+
+The diffusion term is proportional to ``\\sqrt{r}``. The
 [`InterestRateMarketData`](@ref FinancialDerivatives.MarketData.InterestRateMarketData)
 supplies the initial rate.
 

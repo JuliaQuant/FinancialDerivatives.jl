@@ -7,8 +7,14 @@ export BlackKarasinski
 """
 Select the [Black-Karasinski model](https://en.wikipedia.org/wiki/Black%E2%80%93Karasinski_model) of the short rate.
 
-The logarithm of the short rate `r` follows `d ln r = k (ln θ - ln r) dt + σ dW`. The short
-rate is always positive. `θ` is a rate. `ln θ` is the long-term mean of `ln r`.
+The logarithm of the short rate ``r`` follows
+
+```math
+d\\ln r = k (\\ln θ - \\ln r)\\,dt + σ\\,dW
+```
+
+The short rate is always positive. ``θ`` is a rate. ``\\ln θ`` is the long-term mean of
+``\\ln r``.
 
 The
 [`InterestRateMarketData`](@ref FinancialDerivatives.MarketData.InterestRateMarketData)

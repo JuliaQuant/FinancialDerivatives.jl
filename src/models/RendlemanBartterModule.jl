@@ -7,8 +7,13 @@ export RendlemanBartter
 """
 Select the [Rendleman-Bartter model](https://en.wikipedia.org/wiki/Rendleman%E2%80%93Bartter_model) of the short rate.
 
-The short rate `r` follows `dr = θ r dt + σ r dW`. The drift term and the diffusion term
-are proportional to `r`. The
+The short rate ``r`` follows
+
+```math
+dr = θ\\,r\\,dt + σ\\,r\\,dW
+```
+
+The drift term and the diffusion term are proportional to ``r``. The
 [`InterestRateMarketData`](@ref FinancialDerivatives.MarketData.InterestRateMarketData)
 supplies the initial rate.
 

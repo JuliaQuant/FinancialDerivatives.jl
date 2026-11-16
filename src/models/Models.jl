@@ -24,6 +24,16 @@ abstract type Model <: PricingModel end
 """
 Abstract supertype for the models with one state that one Brownian motion drives.
 
+The state ``x`` follows the diffusion process
+
+```math
+dx = a(t, x)\\,dt + b(t, x)\\,dW
+```
+
+``W`` is the Brownian motion. The drift term is ``a(t, x)\\,dt``, and [`drift`](@ref)
+returns ``a``. The diffusion term is ``b(t, x)\\,dW``, and [`diffusion`](@ref) returns
+``b``. The diffusion term is the random shock of the process.
+
 [`simulate`](@ref FinancialDerivatives.Engines.simulate) accepts each subtype.
 
 To add a model, define a subtype and its [`initial_state`](@ref), [`drift`](@ref) and
@@ -35,7 +45,20 @@ abstract type OneFactorModel <: Model end
 """
 Abstract supertype for the models in which the price of the underlying is lognormal.
 
-The state is the price of the underlying. The
+The state is the price ``s`` of the underlying. The price follows the diffusion process
+
+```math
+ds = g(t)\\,s\\,dt + σ(t)\\,s\\,dW
+```
+
+The drift term is ``g(t)\\,s\\,dt``, and the diffusion term is ``σ(t)\\,s\\,dW``. ``g`` is
+the growth rate in the risk-neutral measure, and ``σ`` is the volatility.
+
+[`growth_rate`](@ref) returns the mean of ``g`` between the time zero and the horizon ``t``.
+The volatility of the market data is the square root of the mean of ``σ^2`` in the same
+interval.
+
+The
 [`AnalyticEngine`](@ref FinancialDerivatives.Engines.AnalyticEngine), the
 [`BinomialEngine`](@ref FinancialDerivatives.Engines.BinomialEngine) and the
 [`MonteCarloEngine`](@ref FinancialDerivatives.Engines.MonteCarloEngine) accept each subtype.
@@ -47,7 +70,15 @@ abstract type LognormalModel <: OneFactorModel end
 """
 Abstract supertype for the models of the short rate.
 
-The state is the short rate. The market data supplies the initial rate.
+The state is the short rate ``r``. The rate follows the diffusion process
+
+```math
+dr = a(t, r)\\,dt + b(t, r)\\,dW
+```
+
+[`drift`](@ref) returns ``a``, and [`diffusion`](@ref) returns ``b``.
+
+The market data supplies the initial rate.
 
 To add a model, define a subtype and its [`drift`](@ref) and [`diffusion`](@ref) methods.
 """

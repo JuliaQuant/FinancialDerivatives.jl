@@ -7,8 +7,13 @@ export BrennanSchwartz
 """
 Select the one-factor Brennan-Schwartz model of the short rate.
 
-The short rate `r` follows `dr = k (θ - r) dt + σ r dW`. The diffusion term is proportional to
-`r`. The
+The short rate ``r`` follows
+
+```math
+dr = k (θ - r)\\,dt + σ\\,r\\,dW
+```
+
+The diffusion term is proportional to ``r``. The
 [`InterestRateMarketData`](@ref FinancialDerivatives.MarketData.InterestRateMarketData)
 supplies the initial rate.
 

@@ -7,8 +7,13 @@ export Vasicek
 """
 Select the [Vasicek model](https://en.wikipedia.org/wiki/Vasicek_model) of the short rate.
 
-The short rate `r` follows `dr = k (θ - r) dt + σ dW`. The diffusion term does not depend on
-`r`. The
+The short rate ``r`` follows
+
+```math
+dr = k (θ - r)\\,dt + σ\\,dW
+```
+
+The diffusion term does not depend on ``r``. The
 [`InterestRateMarketData`](@ref FinancialDerivatives.MarketData.InterestRateMarketData)
 supplies the initial rate.
 
