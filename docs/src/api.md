@@ -12,6 +12,14 @@ payoff
 isamerican
 ```
 
+### Day counts
+
+```@docs
+DayCount
+Actual365Fixed
+Business252
+```
+
 ## Market Data
 
 ```@docs

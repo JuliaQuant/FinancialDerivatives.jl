@@ -2,6 +2,7 @@ using Test
 using Dates
 using Random
 using Statistics
+using BusinessDays
 using FinancialDerivatives
 
 # --- Equity options ---
@@ -191,4 +192,15 @@ end
     # put-call parity
     @test price(AnalyticEngine(), eu_call_h, m, heston_md) + k * exp(-r * eu_call_h.t) ≈
           price(AnalyticEngine(), eu_put_h, m, heston_md) + s * exp(-q * eu_put_h.t)
+end
+
+@testset "Business/252 day count" begin
+    # From Monday to Monday over Thanksgiving 2024, the NYSE is open on 4 days.
+    nyse = Business252(:USNYSE)
+    call = EuropeanOption(; k=100.0, t0=Date(2024, 11, 25), t1=Date(2024, 12, 2),
+                          call=true, daycount=nyse)
+    @test call.t == 4 / 252
+    @test_throws ArgumentError EuropeanOption(; k=100.0, t0=Date(2024, 11, 23),
+                                              t1=Date(2024, 11, 24), call=true,
+                                              daycount=nyse)
 end
