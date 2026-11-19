@@ -4,7 +4,7 @@ md = EquityMarketData(; spot_price=100.0, risk_free_rate=0.05, dividend_yield=0.
 
 price(BinomialEngine(; scheme=CoxRossRubinstein()), option, BlackScholes(), md)
 price(BinomialEngine(; scheme=JarrowRudd()), option, BlackScholes(), md)
-price(MonteCarloEngine(), option, BlackScholes(), md)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaQuant/FinancialDerivatives.jl/blob/279c2521f58ff853ea28fb3e86caa9c82ca3324d/src/FinancialDerivatives.jl#L1-L63">source</a></section></details></article><h2 id="Architecture"><a class="docs-heading-anchor" href="#Architecture">Architecture</a><a id="Architecture-1"></a><a class="docs-heading-anchor-permalink" href="#Architecture" title="Permalink"></a></h2><p>The documentation build makes this diagram from the types and the methods of the package. The diagram does not show the combinations of types that <a href="api/#FinancialDerivatives.Engines.price"><code>price</code></a> accepts.</p><div class="mermaid">
+price(MonteCarloEngine(), option, BlackScholes(), md)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaQuant/FinancialDerivatives.jl/blob/e183949a456cab5339542d8d42d8b39351f46e31/src/FinancialDerivatives.jl#L1-L63">source</a></section></details></article><h2 id="Architecture"><a class="docs-heading-anchor" href="#Architecture">Architecture</a><a id="Architecture-1"></a><a class="docs-heading-anchor-permalink" href="#Architecture" title="Permalink"></a></h2><p>The documentation build makes this diagram from the types and the methods of the package. The diagram does not show the combinations of types that <a href="api/#FinancialDerivatives.Engines.price"><code>price</code></a> accepts.</p><div class="mermaid">
 classDiagram
     direction LR
     namespace Engines {
@@ -50,6 +50,8 @@ classDiagram
         }
     }
     namespace Instruments {
+        class Actual365Fixed {
+        }
         class AmericanOption {
             k::Real
             t::Real
@@ -60,6 +62,12 @@ classDiagram
             k::Real
             t::Real
             call::Bool
+        }
+        class Business252 {
+            calendar
+        }
+        class DayCount {
+            &lt;&lt;abstract&gt;&gt;
         }
         class Derivative {
             &lt;&lt;abstract&gt;&gt;
@@ -207,8 +215,10 @@ classDiagram
     PricingEngine &lt;|-- MonteCarloEngine
     BinomialScheme &lt;|-- RendlemanBartterTree
     BinomialScheme &lt;|-- Tian
+    DayCount &lt;|-- Actual365Fixed
     Option &lt;|-- AmericanOption
     Option &lt;|-- AsianOption
+    DayCount &lt;|-- Business252
     FinancialInstrument &lt;|-- Derivative
     Option &lt;|-- EuropeanOption
     Option &lt;|-- FXOption
@@ -237,4 +247,4 @@ classDiagram
 import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/+esm";
 mermaid.initialize({startOnLoad: true, theme: "neutral"});
 </script>
-<h2 id="Contents"><a class="docs-heading-anchor" href="#Contents">Contents</a><a id="Contents-1"></a><a class="docs-heading-anchor-permalink" href="#Contents" title="Permalink"></a></h2><ul><li><a href="getting_started/#Getting-Started">Getting Started</a></li><li class="no-marker"><ul><li><a href="getting_started/#Installation">Installation</a></li><li><a href="getting_started/#Usage">Usage</a></li></ul></li><li><a href="api/#API">API</a></li><li class="no-marker"><ul><li><a href="api/#Instruments">Instruments</a></li><li><a href="api/#Market-Data">Market Data</a></li><li><a href="api/#Pricing-Engines">Pricing Engines</a></li><li><a href="api/#Models">Models</a></li><li><a href="api/#Pricing-and-simulation">Pricing and simulation</a></li><li><a href="api/#Private">Private</a></li></ul></li></ul></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="getting_started/">Getting Started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Monday 16 November 2026 03:46">Monday 16 November 2026</span>. Using Julia version 1.13.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+<h2 id="Contents"><a class="docs-heading-anchor" href="#Contents">Contents</a><a id="Contents-1"></a><a class="docs-heading-anchor-permalink" href="#Contents" title="Permalink"></a></h2><ul><li><a href="getting_started/#Getting-Started">Getting Started</a></li><li class="no-marker"><ul><li><a href="getting_started/#Installation">Installation</a></li><li><a href="getting_started/#Usage">Usage</a></li><li><a href="getting_started/#Dates-and-day-counts">Dates and day counts</a></li></ul></li><li><a href="api/#API">API</a></li><li class="no-marker"><ul><li><a href="api/#Instruments">Instruments</a></li><li><a href="api/#Market-Data">Market Data</a></li><li><a href="api/#Pricing-Engines">Pricing Engines</a></li><li><a href="api/#Models">Models</a></li><li><a href="api/#Pricing-and-simulation">Pricing and simulation</a></li><li><a href="api/#Private">Private</a></li></ul></li></ul></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="getting_started/">Getting Started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.20.0 on <span class="colophon-date" title="Thursday 19 November 2026 20:54">Thursday 19 November 2026</span>. Using Julia version 1.13.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
