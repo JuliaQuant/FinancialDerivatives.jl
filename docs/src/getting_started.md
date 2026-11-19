@@ -51,3 +51,19 @@ julia> paths = simulate(MonteCarloEngine(; num_paths=1_000, num_steps=250), mode
 julia> size(paths)
 (251, 1000)
 ```
+
+## Dates and day counts
+
+An option can also take an issue date `t0` and an expiry date `t1`. A day count converts the two dates to the time to expiration. The default day count is [`Actual365Fixed`](@ref).
+
+Integration with buisness days is supported: 
+
+```julia
+julia> using BusinessDays, Dates
+
+julia> opt = EuropeanOption(; k=90.0, t0=Date(2024, 11, 25), t1=Date(2024, 12, 2), call=false,
+                            daycount=Business252(:USNYSE))
+
+julia> opt.t  # 4 trading days: the NYSE is closed on Thanksgiving
+0.015873015873015872
+```

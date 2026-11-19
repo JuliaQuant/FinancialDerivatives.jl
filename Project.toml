@@ -12,7 +12,14 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
+[weakdeps]
+BusinessDays = "4f18b42c-503e-5345-9536-bb0f25fc7038"
+
+[extensions]
+FinancialDerivativesBusinessDaysExt = "BusinessDays"
+
 [compat]
+BusinessDays = "0.9"
 Dates = "1"
 Distributions = "0.25"
 QuadGK = "2"
@@ -23,7 +30,8 @@ Test = "1"
 julia = "1.13"
 
 [extras]
+BusinessDays = "4f18b42c-503e-5345-9536-bb0f25fc7038"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["BusinessDays", "Test"]
