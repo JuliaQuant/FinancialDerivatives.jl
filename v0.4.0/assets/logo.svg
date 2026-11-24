@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="512" height="512" role="img" aria-labelledby="title">
+  <title id="title">FinancialDerivatives.jl</title>
+  <!-- A binomial tree and the distribution of its outcomes. There is no background:
+       each colour has enough contrast on a white page and on a dark page. -->
+  <g fill="none" stroke="#00D4FF" stroke-width="36" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M184 512 634 205M184 512 634 819M409 358.5 634 512M409 665.5 634 512"/>
+    <path d="M761 186C762.5 213.2 765.1 240.3 772.1 267.5C779 294.7 790.7 321.8 808.1 349C825.4 376.2 848.4 403.3 867.6 430.5C886.8 457.7 900.5 484.8 900.5 512C900.5 539.2 886.8 566.3 867.6 593.5C848.4 620.7 825.4 647.8 808.1 675C790.7 702.2 779 729.3 772.1 756.5C765.1 783.7 762.5 810.8 761 838"/>
+  </g>
+  <g fill="#00D4FF">
+    <circle cx="184" cy="512" r="56"/>
+    <circle cx="409" cy="358.5" r="56"/>
+    <circle cx="409" cy="665.5" r="56"/>
+  </g>
+  <!-- The three final nodes follow the dots of the Julia logo, in brighter tones. -->
+  <circle cx="634" cy="205" r="87" fill="#1FCB4F"/>
+  <circle cx="634" cy="512" r="87" fill="#B45CFF"/>
+  <circle cx="634" cy="819" r="87" fill="#FF4545"/>
+</svg>
